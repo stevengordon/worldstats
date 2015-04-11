@@ -37,14 +37,54 @@ app.use(session({ //***
     resave: false,
     saveUninitialized: true
 }));
-//Below are the various ROUTES
-//ROOT route
-app.get('/', function (req,res){
+//Define the various ROUTES
+
+//Public routes available without login are: 1) welcome page, 2) high scores page, 3) signup page
+
+//ROOT route for welcome page
+app.get('/', function(req,res){
     console.log("Hello world!");
-    res.send("Hello world!");
+    res.send("Hello WorldStats!");
 });
 
-//Make the server listen on port 3000
+//High scores page
+app.get('/scores', function(req,res){
+    res.send("This is the high scores page! Top score is still 0");
+});
+
+//Create new player page
+app.get('/players/new', function(req,res){
+    res.send("Be a player!");
+});
+
+//Once user submits form on new player page
+app.post('/players', function(req,res){
+    //PROCESS FORM FROM NEW USER PAGE HERE
+});
+
+//Login page
+app.get('/login', function(req,res){
+    res.send("Please log in to start playing");
+});
+
+//Private routes that are only available to players after log-in
+
+//Profile page
+app.get('/players/:id', function(req,res){ //*** CONFIRM THIS WORKS AS URL PARAM
+    res.send("Profile page");
+})
+
+app.get('/pregame', function(req,res){
+    res.send("Pregame for a logged-in player");
+})
+
+//Question page --> possibly app.get '/question'
+
+//Answer page --> possibly app.get '/answer'
+
+//Postgame page --> possibly app.get '/postgame'
+
+//Start the server listening on port 3000
 app.listen(3000, function (){
     console.log("Don't blame me. I'm an interpreter. I'm not supposed to know a power socket from a computer terminal. ");
 });

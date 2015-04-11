@@ -44,17 +44,20 @@ app.use(session({ //***
 //ROOT route for welcome page
 app.get('/', function(req,res){
     console.log("Hello world!");
-    res.send("Hello WorldStats!");
+    res.render('index.ejs');
+  //  res.send("Hello WorldStats!");
 });
 
 //High scores page
 app.get('/scores', function(req,res){
-    res.send("This is the high scores page! Top score is still 0");
+    res.render('highscores.ejs');
+//    res.send("This is the high scores page! Top score is still 0");
 });
 
 //Create new player page
 app.get('/players/new', function(req,res){
-    res.send("Be a player!");
+    res.render('signup.ejs');
+//    res.send("Be a player!");
 });
 
 //Once user submits form on new player page
@@ -64,7 +67,8 @@ app.post('/players', function(req,res){
 
 //Login page
 app.get('/login', function(req,res){
-    res.send("Please log in to start playing");
+    res.render('login.ejs');
+//    res.send("Please log in to start playing");
 });
 
 //Private routes that are only available to players after log-in

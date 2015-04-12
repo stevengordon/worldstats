@@ -22,21 +22,40 @@ var methodOverride = require('method-override');
 var pg = require('pg');
 var request = require('request'); //needed for HTTP API access
 var session = require('express-session');
-//var sql = require('./models'); //include the PostgreSQL database ***
+var sql = require('./models'); //include the PostgreSQL database ***
 var app = express(); //begin express ***
 
 //APP.SET to set main settings
 app.set("view engine","ejs");
 
-//APP.USE for middleware
+//APP.USE for middleware elements
 app.use(bodyParser.urlencoded({extended: true})); //***
-app.use(express.static('static')); //the 'static' directory holds CSS files, images, etc.
 app.use(methodOverride("_method")); //***
+app.use(express.static('static')); //the 'static' directory holds CSS files, images, etc.
 app.use(session({ //***
     secret: 'only for Worldstats',
     resave: false,
     saveUninitialized: true
 }));
+app.use('/', function(req,res,next){
+    req.login = function(user){
+        req.session.userId = user.id;
+    };
+    req.currentUser = function() {
+        return sql.Player.find({
+            where: { id: req.session.userId }
+        }).then(function(user) {
+            req.user = user;
+            return user;
+        })
+    };
+    req.logout = function() {
+        req.session.userId = null;
+        req.user = null;
+    };
+    next(); //move on to next middleware
+});
+
 //Define the various ROUTES
 
 //Public routes available without login are: 1) welcome page, 2) high scores page, 3) signup page

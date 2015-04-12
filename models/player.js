@@ -5,13 +5,20 @@ var salt = bcrypt.genSaltSync(10);
 module.exports = function(sequelize, DataTypes) {
   var Player = sequelize.define("Player",
   {
-    screen_name: DataTypes.STRING,
+    screen_name: {
+      type: DataTypes.STRING,
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
+    },
     email: {
       type: DataTypes.STRING,
-        validate: {
-          unique: true
-        }
-      },
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
     password_digest: {
       type: DataTypes.STRING,
       validate: {
@@ -26,17 +33,19 @@ module.exports = function(sequelize, DataTypes) {
       checkPassword: function(password) {
         return bcrypt.compareSync(password, this.passwordDigest);
       }
-    }},
-  {
+    },
     classMethods: {
       encryptPassword: function(password) {
         var hash = bcrypt.hashSync(password,salt);
         return hash;
       },
-      createSecure: function(email, password) {
+      createSecure: function(jsScreenName, jsEmail, jsPassword) {
+        console.log("Got inside of createSecure!");
+        console.log("Inside of createSecure, this is ",this);
         return this.create({
-          email: email,
-          password_digest: this.encryptPassword(password)
+          screen_name: jsScreenName,
+          email: jsEmail,
+          password_digest: this.encryptPassword(jsPassword)
         });
       },
       authenticate: function(email, password) {

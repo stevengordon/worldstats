@@ -79,9 +79,17 @@ app.get('/players/new', function(req,res){
 //    res.send("Be a player!");
 });
 
-//Once user submits form on new player page
+//Once user submits form on create new player page, process info with route below:
 app.post('/players', function(req,res){
-    //PROCESS FORM FROM NEW USER PAGE HERE
+    var newScreenName = req.body.signupScreenName;
+    var newEmail = req.body.signupEmail;
+    var newPassword = req.body.signupPassword;
+    console.log(newScreenName,newEmail,newPassword);
+    console.log(typeof sql.Player.createSecure);
+    sql.Player.createSecure(newScreenName,newEmail,newPassword).then(
+        function(newUser){
+            res.redirect('/login');
+        });
 });
 
 //Login page

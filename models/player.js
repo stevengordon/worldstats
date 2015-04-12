@@ -31,7 +31,8 @@ module.exports = function(sequelize, DataTypes) {
   {
     instanceMethods: {
       checkPassword: function(password) {
-        return bcrypt.compareSync(password, this.passwordDigest);
+        console.log("Hello from inside checkPassword!")
+        return bcrypt.compareSync(password, this.password_digest);
       }
     },
     classMethods: {
@@ -40,27 +41,28 @@ module.exports = function(sequelize, DataTypes) {
         return hash;
       },
       createSecure: function(jsScreenName, jsEmail, jsPassword) {
-        console.log("Got inside of createSecure!");
-        console.log("Inside of createSecure, this is ",this);
+        console.log("Hello from inside of createSecure!");
         return this.create({
           screen_name: jsScreenName,
           email: jsEmail,
           password_digest: this.encryptPassword(jsPassword)
         });
       },
-      authenticate: function(email, password) {
+      authenticate: function(jsScreenName, jsPassword) {
         // find a user in the DB
+        console.log("Hello from inside Authenticate!")
         return this.find({
           where: {
-            email: email
+            screen_name: jsScreenName
           }
         })
-        .then(function(user){
-          if (user === null){
-            throw new Error("Username does not exist");
+        .then(function(foundPlayer){
+          if (foundPlayer === null){
+            return false;
+            //throw new Error("This screen name could not be found. Please try again.");
           }
-          else if (user.checkPassword(password)){
-            return user;
+          else if (foundPlayer.checkPassword(jsPassword)){
+            return foundPlayer;
           } else {
             return false;
           }

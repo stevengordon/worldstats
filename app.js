@@ -95,7 +95,24 @@ app.post('/players', function(req,res){
 //Login page
 app.get('/login', function(req,res){
     res.render('login.ejs');
-//    res.send("Please log in to start playing");
+});
+
+app.post('/login', function(req,res){
+    var uScreenName = req.body.loginScreenName;
+    var uPassword = req.body.loginPassword;
+    console.log(uScreenName,uPassword);
+
+    sql.Player.authenticate(uScreenName,uPassword).then(
+        function(user){
+            if (user) {
+                //this means a user was returned by authenticate function, so password valid
+                req.login(user);
+                res.redirect('/pregame');
+            } else {
+                 //this means no user was returned (false was returned), so login credentials invalid
+                res.render('login.ejs'); //*** Add "login failed" error message to user
+            }
+        })
 });
 
 //Private routes that are only available to players after log-in

@@ -8,6 +8,11 @@
 	<% include partials/header.ejs %>
 </header>
 <body>
-	<h1>Login page</h1>
+	<h1>Please log in</h1>
+	<form action="/login" method="POST">
+		<input type="text" name="loginScreenName" placeholder="Screen name">
+		<input type="password" name="loginPassword" placeholder="Password">
+		<button>Login</button>
+	</form>
 </body>
 </html>

@@ -2,24 +2,20 @@
 <html lang="en">
 <head>
 	<% include partials/head.ejs %>
-	<title>Question</title>
+	<title>Profile</title>
 </head>
 <header>
 	<% include partials/header.ejs %>
 </header>
 <body>
-	<h1>Question page</h1>
+	<h1>Profile page</h1>
 
-	<h2>What is the <%=ejsQuestionData.metricShortName%>?</h2>
-
-
-	<h2>	<%=ejsQuestionData.countryAndValueData%></h2>
-
-	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>
-
-	<p>Current round: <%=ejsQuestionData.round%></p>
-	<p>Current score: <%=ejsQuestionData.score%></p>
-
+	<h2>Here's what we've got...</h2>
+	<ul>
+	<li>Screen name: <%=ejsPlayer.screen_name%></li>
+	<li>Email: <%=ejsPlayer.email%></li>
+	<li>Cumulative score: <%=ejsPlayer.cumulative_score%></li>
+	</ul>
 
 
 <!-- 	<form action="/login" method="POST">

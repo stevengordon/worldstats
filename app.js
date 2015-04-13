@@ -41,7 +41,7 @@ app.use('/', function(req,res,next){
     req.login = function(user){
         req.session.userId = user.id;
     };
-    req.currentUser = function() {
+    req.currentUser = function() { ///***** WHY DOES THIS HAVE TWO RETURN STATEMENTS
         return sql.Player.find({
             where: { id: req.session.userId }
         }).then(function(user) {
@@ -119,12 +119,26 @@ app.post('/login', function(req,res){
 
 //Profile page
 app.get('/players/:id', function(req,res){ //*** STILL TO CONFIRM THIS WORKS AS URL PARAM
-    res.send("Profile page");
+    
+    console.log("Hello from profile page")
+    console.log(req.currentUser);
+    res.send(currentUser);
+})
+
+//Real profile page
+app.get('/profile', function(req,res){
+    req.currentUser().then(function(foundPlayer){
+        if (foundPlayer) {
+            res.render('profile',{ejsPlayer:foundPlayer});
+        } else {
+            res.redirect('/login');
+        }
+    })
 })
 
 //Pregame page
 app.get('/pregame', function(req,res){
-    res.send("This will be pregame page once player logs in");
+    res.render('pregame');
 })
 
 //Question page
@@ -174,8 +188,11 @@ var playBall = function(nextFun) {
             "metricDescription":"",
             "round":1,
             "score":0,
+            "screenName":"",
             "countryAndValueData":[],
-            "screenName":""
+            "countries":[],
+            "values":[],
+            "countryCodes":[]
         }; 
 
     //THESE ARE VARIOUS 'SUPPORTING' FUNCTIONS FOR PLAYBALL. *** CONSIDER WHETHER THEY SHOULD LIVE INSIDE OF OR OUTSIDE OF PLAYBALL.
@@ -300,7 +317,7 @@ var playBall = function(nextFun) {
         var urlWB = "http://api.worldbank.org/countries/all/indicators/"+whichMetricCode+"?format=json&&MRV=1&&per_page=400";
         console.log(urlWB);
 
-        var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN"];
+        var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ"];
 
         request({url: urlWB, timeout: 6000}, function(error,response,body){
             console.log("Hello from inside request function")
@@ -331,7 +348,7 @@ var playBall = function(nextFun) {
                     console.log(questionData);
             }
 
-            //NOW THAT WE HAVE *FULL* DATA SET, REDUCE IT TO WHAT IS NEEDED FOR THE ROUND
+            //NOW THAT WE HAVE *FULL* DATA SET FROM API, REDUCE IT TO WHAT IS NEEDED FOR THE ROUND
 
             //SORT
 
@@ -349,7 +366,10 @@ var playBall = function(nextFun) {
             roundData.metricShortName = currentMetricObject.metricShortName;
             roundData.metricDescription = currentMetricObject.metricDescription;
             roundData.countryAndValueData = questionData;
+
             //roundData.screenname = req.currentUser.screen_name; //****
+
+
 
 
             nextRound = currentRound+1;

@@ -8,9 +8,19 @@
 	<% include partials/header.ejs %>
 </header>
 <body>
-	<h1>Question</h1>
+	<h1>Question page</h1>
 
-	<%= ejsQuestionData%>
+	<h2>What is the <%=ejsQuestionData.metricShortName%></h2>
+
+
+	<h2>	<%=ejsQuestionData.countryAndValueData%></h2>
+
+	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>
+
+	<p>Current round: <%=ejsQuestionData.round%></p>
+	<p>Current score: <%=ejsQuestionData.score%></p>
+
+
 
 <!-- 	<form action="/login" method="POST">
 		<input type="text" name="loginScreenName" placeholder="Screen name">

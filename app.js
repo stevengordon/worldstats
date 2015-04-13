@@ -169,11 +169,14 @@ var playBall = function(nextFun) {
     var questionData = [], //country name and value pairs for a given round
             //possible structure [{"name":"___","value":##}]
         answerData = [], //WHAT PLAYER ANSW"ERS -- STRUCTURE TBD ***
-        roundData = {  //the METRIC that will be presented in a given round.
-            "metricCode":"",
-            "metricDescription":"",
+        roundData = {  //the data that will be presented on the Question page in a given round.
             "metricShortName":"",
-            "metricSelectionType":""}; 
+            "metricDescription":"",
+            "round":1,
+            "score":0,
+            "countryAndValueData":[],
+            "screenName":""
+        }; 
 
     //THESE ARE VARIOUS 'SUPPORTING' FUNCTIONS FOR PLAYBALL. *** CONSIDER WHETHER THEY SHOULD LIVE INSIDE OF OR OUTSIDE OF PLAYBALL.
 
@@ -198,7 +201,7 @@ var playBall = function(nextFun) {
 
     var getMetricInfo = function (metricNumber) {
         //This function takes in a metric number (ID # in SQL or, initially, hard-coded key in object) and returns an object with the essential information about each metric.
-        //Structure of result should match the roundData object declared elsewhere:
+        //Structure of result should be as follows:
         // {"metricCode":"","metricDescription":"","metricShortName":"","metricSelectionType":""}
 
         //Until metric information is moved to SQL database, it is hard-coded in array below:
@@ -297,7 +300,7 @@ var playBall = function(nextFun) {
         var urlWB = "http://api.worldbank.org/countries/all/indicators/"+whichMetricCode+"?format=json&&MRV=1&&per_page=400";
         console.log(urlWB);
 
-        var blackListedCountries=["1A", "XT", "S1","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN"];
+        var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN"];
 
         request({url: urlWB, timeout: 6000}, function(error,response,body){
             console.log("Hello from inside request function")
@@ -338,14 +341,27 @@ var playBall = function(nextFun) {
 
             questionData = selectLines(questionData);
 
+
+            //Make object to pass to res.render for EJS view of Question page.
+
+            roundData.round = currentRound;
+            roundData.score = gameScore;
+            roundData.metricShortName = currentMetricObject.metricShortName;
+            roundData.metricDescription = currentMetricObject.metricDescription;
+            roundData.countryAndValueData = questionData;
+            //roundData.screenname = req.currentUser.screen_name; //****
+
+
             nextRound = currentRound+1;
 
             console.log("About to call next fun at end of NEW request call-back loop.")
-            nextFun(questionData); //CALLBACK AFTER ASYNC API REQUEST
+            console.log("Here is the data to be sent")
+            console.log(roundData);
+            nextFun(roundData); //CALLBACK AFTER ASYNC API REQUEST
         });
 
-        console.log("This is question data inside getDataWB")
-        console.log(questionData);
+        // console.log("This is question data inside getDataWB")
+        // console.log(questionData);
     };
 
     var getRoundData = function(roundNumber){

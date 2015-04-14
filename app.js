@@ -176,8 +176,22 @@ app.get('/question', function(req,res){
 
 //Answer page
 app.get('/answer', function(req,res){
-    res.send("This is answer page");
+    var playerAnswer = req.query.pAnswer;
+    console.log("This is player answer ",playerAnswer);
+
+    //PROCESS ANSWER HERE -- or call function that does this
+
+    res.render('answer.ejs',{ejsAnswer:playerAnswer});
 })
+
+app.get('/nextquestion', function(req,res){
+    if (req.session.nextRound > req.session.maxRounds) { //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!
+        res.send("Game over!");
+    } else { //still playing, so reload question page
+        res.redirect('/question');
+    }
+})
+
 
 //Postgame page
 app.get('/postgame',function(req,res){

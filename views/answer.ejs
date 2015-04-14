@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<% include partials/head.ejs %>
+	<title>Answer</title>
+</head>
+<header>
+	<% include partials/header.ejs %>
+</header>
+<body>
+	<h1>Answer page</h1>
+
+	<h2>Your answer was: <%=ejsAnswer%></h2>
+	<h2>The correct answer is:</h2>
+	<h2>You get __ points!</h2>
+<form action="/nextquestion" method="GET">
+	<button>Next question</button>
+</form>
+
+</body>
+</html>

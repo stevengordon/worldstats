@@ -131,6 +131,10 @@ module.exports = function(req,res,next) {
                 "countryCodes":[]
             }; 
 
+        //Increment to next round
+        req.session.currentRound = req.session.nextRound; //nextRound has already be incremented
+        console.log("Current round is now ",req.session.currentRound);
+
         var getDataWB = function(whichMetricCode){
             //This function takes in a World Bank "Indicator" code and uses the World Bank API to request that data and then parse and clean the data for use in the WorldStats app.
             //This function will return an array of Country Name and Country Value for this particular indicator.
@@ -140,7 +144,7 @@ module.exports = function(req,res,next) {
             var urlWB = "http://api.worldbank.org/countries/all/indicators/"+whichMetricCode+"?format=json&&MRV=1&&per_page=400";
             console.log(urlWB);
 
-            var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ"];
+            var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ","ZF","B8","S2","XU","XC","XJ","1W"];
 
             request({url: urlWB, timeout: 6000}, function(error,response,body){
                 console.log("Hello from inside request function")
@@ -229,62 +233,53 @@ module.exports = function(req,res,next) {
         };
 
     var selectLines = function(fullData){
-    //This will take in the full dataset from WorldBank for a given metric and return just the data that is needed for the given round -- limited by the number set in countriesPerRound
-    //IN THE FUTURE, use a particular selection type (e.g., bias to top, to bottom, quartiles, etc.) but for now, just use random selection
+        //This will take in the full dataset from WorldBank for a given metric and return just the data that is needed for the given round -- limited by the number set in countriesPerRound
+        //IN THE FUTURE, use a particular selection type (e.g., bias to top, to bottom, quartiles, etc.) but for now, just use random selection
 
-    //Variables this uses, already defined:
-    // currentMetricObject -- object with all info about the current metric
+        //Variables this uses, already defined:
+        // currentMetricObject -- object with all info about the current metric
 
-    //Variables this users, defined herein:
-    // whichLines -- array with numbers showing which lines from full data should be used for particular question
-    // selectedData -- new array with just the selected lines to be presented to user
+        //Variables this users, defined herein:
+        // whichLines -- array with numbers showing which lines from full data should be used for particular question
+        // selectedData -- new array with just the selected lines to be presented to user
 
-    console.log("Hello from inside selectLines")
+        console.log("Hello from inside selectLines")
 
-    var whichLines = [],
-        selectedData = [];
+        var whichLines = [],
+            selectedData = [];
 
-    var highestCountry = fullData.length;
+        var highestCountry = fullData.length;
 
-    console.log("Highest country #");
-    console.log(highestCountry);
+        console.log("Highest country #");
+        console.log(highestCountry);
 
-    if (currentMetricObject.selectionType === "random"){
-        console.log("I am random.  This is good");
-        whichLines = randomSelection(req.session.countriesPerRound,highestCountry);
+        if (currentMetricObject.selectionType === "random"){
+            console.log("I am random.  This is good");
+            whichLines = randomSelection(req.session.countriesPerRound,highestCountry);
+        };
+
+        if (currentMetricObject.selectionType === "quartiles"){
+            //select one line from each quarter of range
+        };
+
+        console.log("whichLines");
+        console.log(whichLines);
+
+        for (var i = 0; i < whichLines.length; i++) {
+
+            console.log("Inside for loop to select data");
+            console.log(fullData[whichLines[i]])
+
+            selectedData.push(fullData[whichLines[i]]);
+        };
+
+        console.log("seletedData")
+        console.log(selectedData);
+
+        return selectedData;
     };
-
-    if (currentMetricObject.selectionType === "quartiles"){
-        //select one line from each quarter of range
-    };
-
-    console.log("whichLines");
-    console.log(whichLines);
-
-    for (var i = 0; i < whichLines.length; i++) {
-
-        console.log("Inside for loop to select data");
-        console.log(fullData[whichLines[i]])
-
-        selectedData.push(fullData[whichLines[i]]);
-    };
-
-    console.log("seletedData")
-    console.log(selectedData);
-
-    return selectedData;
-}
 
     //Get ready to play -- done with function declarations and start doing some calling!
-
-    //set gameMetricOrder *ONCE* before starting iteration through rounds
-
-    // if (currentRound === 1) { //this array can only get set one time!
-    //     gameMetricOrder = randomOrder(maxRounds);
-    // }; //SHIFTED THIS TO setupGame
-
-    // console.log("Game order");
-    // console.log(gameMetricOrder);
 
     //Get data for the current round!
 

@@ -25,6 +25,10 @@
 	<p>Current round: <%=ejsQuestionData.round%></p>
 	<p>Current score: <%=ejsQuestionData.score%></p>
 
+<form action="/answer" method="GET">
+	<input type="text" name="pAnswer" placeholder="Please answer">
+	<button>Submit</button>
+</form>
 
 
 <!-- 	<form action="/login" method="POST">

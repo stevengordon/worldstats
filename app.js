@@ -40,9 +40,7 @@ app.use(session({ //***
     resave: false,
     saveUninitialized: true
 }));
-// Mike added
-//app.use(gameStuff);
-//
+
 app.use('/', function(req,res,next){
     req.login = function(user){
         req.session.userId = user.id;
@@ -71,7 +69,6 @@ app.use('/', function(req,res,next){
 app.get('/', function(req,res){
     console.log("Hello world!");
     res.render('index.ejs');
-  //  res.send("Hello WorldStats!");
 });
 
 //High scores page
@@ -124,13 +121,13 @@ app.post('/login', function(req,res){
 
 //Private routes that are only available to players after log-in
 
-//Profile page
-app.get('/players/:id', function(req,res){ //*** STILL TO CONFIRM THIS WORKS AS URL PARAM
+//Profile page -- for edit
+// app.get('/players/:id', function(req,res){ //*** STILL TO CONFIRM THIS WORKS AS URL PARAM
     
-    console.log("Hello from profile page")
-    console.log(req.currentUser);
-    res.send(currentUser);
-})
+//     console.log("Hello from profile page")
+//     console.log(req.currentUser);
+//     res.send(currentUser);
+// })
 
 //Real profile page
 app.get('/profile', function(req,res){
@@ -141,7 +138,7 @@ app.get('/profile', function(req,res){
             res.redirect('/login');
         }
     })
-})
+});
 
 /** Testing the shift of game code to separate file
  // and shift of game-consistent variables to req.session.varName
@@ -161,6 +158,7 @@ app.get('/isworking', function(req,res){
 app.get('/pregame', function(req,res){
     req.currentUser().then(function(foundPlayer){
         if (foundPlayer) {
+            req.setupGame(); //initialize what is needed for the game
             res.render('pregame',{ejsFoundPlayer:foundPlayer});
         } else {
             res.redirect('/login');
@@ -169,19 +167,22 @@ app.get('/pregame', function(req,res){
 });
 
 //Question page
-
 app.get('/question', function(req,res){
     var renderIt = function(data){
-        console.log("THIS IS DATA", data);
         res.render('question.ejs',{ejsQuestionData:data});
-//        res.send(data);
     };
     req.playBall(renderIt);
 });
 
-//Answer page --> possibly app.get '/answer'
+//Answer page
+app.get('/answer', function(req,res){
+    res.send("This is answer page");
+})
 
-//Postgame page --> possibly app.get '/postgame'
+//Postgame page
+app.get('/postgame',function(req,res){
+    res.send("Game over.  This is post game page");
+});
 
 //Core game-play function
 //function gameStuff() {
@@ -452,8 +453,6 @@ app.get('/question', function(req,res){
 
 // console.log("End of playball!");
 // }; //end of PlayBall
-
-
 
 //Start the server listening on port 3000
 app.listen(3000, function (){

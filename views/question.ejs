@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 	<% include partials/head.ejs %>
 	<title>Question</title>
 </head>
@@ -18,6 +19,20 @@
 			<div><%=country[0]%>, (<%=country[1]%>), <%=country[2]%>: <input type="radio"></div>
 		<% }) %>
 	</form> -->
+
+<ul class="sortable">
+    <li>Item 1
+    <li>Item 2
+    <li>Item 3
+    <li>Item 4
+</ul>
+<script src="jquery.sortable.js"></script>
+<script>
+    $('.sortable').sortable();
+</script>
+
+
+
 	<h2>	<%=ejsQuestionData.countryAndValueData%></h2>
 
 	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>
@@ -36,5 +51,6 @@
 		<input type="password" name="loginPassword" placeholder="Password">
 		<button>Login</button>
 	</form> -->
+<!-- <script src="./javascripts/jquery.sortable.js"></script> -->
 </body>
 </html>

@@ -34,7 +34,7 @@ app.set("view engine","ejs");
 //APP.USE for middleware elements
 app.use(bodyParser.urlencoded({extended: true})); //***
 app.use(methodOverride("_method")); //***
-app.use(express.static('static')); //the 'static' directory holds CSS files, images, etc.
+app.use(express.static('public')); //the 'static' directory holds CSS files, images, etc.
 app.use(session({ //***
     secret: 'only for Worldstats',
     resave: false,
@@ -185,7 +185,7 @@ app.get('/answer', function(req,res){
 })
 
 app.get('/nextquestion', function(req,res){
-    if (req.session.nextRound > req.session.maxRounds) { //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!
+    if (req.session.nextRound >= req.session.maxRounds) { //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!
         res.send("Game over!");
     } else { //still playing, so reload question page
         res.redirect('/question');

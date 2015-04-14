@@ -176,8 +176,12 @@ app.get('/question', function(req,res){
 
 //Answer page
 app.get('/answer', function(req,res){
-    var playerAnswer = req.query.pAnswer;
-    console.log("This is player answer ",playerAnswer);
+    console.log("This is player answer ",req.query);
+    for (var id in req.query) {
+        console.log("\n\n\nTHIS IS THE VAL",id, req.query[id]);
+    }
+
+
 
     //PROCESS ANSWER HERE -- or call function that does this
 

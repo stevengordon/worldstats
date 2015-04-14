@@ -196,9 +196,6 @@ module.exports = function(req,res,next) {
 
                 roundData.screen_name = req.session.screen_name; //****
 
-
-
-
                 req.session.nextRound = req.session.currentRound+1;
 
                 console.log("About to call next fun at end of NEW request call-back loop.")

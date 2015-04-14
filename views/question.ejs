@@ -8,11 +8,16 @@
 	<% include partials/header.ejs %>
 </header>
 <body>
+	<h1>Hi, <%= ejsQuestionData.screen_name %>.</h1>
 	<h1>Question page</h1>
 
 	<h2>What is the <%=ejsQuestionData.metricShortName%>?</h2>
 
-
+<!-- 	<form action='/getanswerpage' method="GET">
+		<% ejsQuestionData.countryAndValueData.forEach(function(country){ %>
+			<div><%=country[0]%>, (<%=country[1]%>), <%=country[2]%>: <input type="radio"></div>
+		<% }) %>
+	</form> -->
 	<h2>	<%=ejsQuestionData.countryAndValueData%></h2>
 
 	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>

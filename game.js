@@ -66,9 +66,15 @@ var randomSelection = function(quantity,maximum){
     return randomList;
 };
 
-var sortArray = function(array){
+var sortArrayPairs = function(array){
     //This will be function that takes in an array and sorts it -- the catch is that the array is actually an array of objects, and it needs to sort each object by the "value" key pair in the object.
     //For now, it won't do anything -- but I want the placeholder function to be ready and it is called from other places.
+
+
+
+
+
+
     return array;
 };
 
@@ -86,6 +92,8 @@ module.exports = function(req,res,next) {
     req.session.gameMetricOrder = []; //this is array, set once at the start of each game, with order of metrics to use this particular game
     req.session.gameSummary = []; //Keep track of each round's "action" for final summary --> structure is:
             //          [roundNumber, metricShortName, roundScore]
+    req.session.countryAndValueData = []; //array of countries and values for scoring
+    req.session.metricShortName = "";
 
     //Choose a random order of metrics before the first round
     req.session.gameMetricOrder = randomOrder(req.session.maxRounds);
@@ -103,32 +111,20 @@ module.exports = function(req,res,next) {
         A QUESTION has a set of COUNTRY NAMES and COUNTRY VALUES for a given METRIC
         **/
 
-        //Set variables for each GAME //SHIFTED THESE TO BE ON SESSION OBJECT
-
-        // var gameScore = 0, //How many points has player earned in this game so far?
-        //     currentRound = 1, //Which round is player currently playing?
-        //     nextRound = 1, //just define it this way for starting condition
-        //     maxRounds = 10, //How many rounds ends the game?
-        //     countriesPerRound = 4, //How many countries are displayed in a given round? Change this to make game harder or easier.  Maybe even pass this in as a parameter to playBall function for multiple level options...
-        //     currentMetricNum = 0, //this is internal ID # of the current metric
-        //     gameMetricOrder = [], //this is array, set once at the start of each game, with order of metrics to use this particular game
-        //     gameSummary = []; //Keep track of each round's "action" for final summary --> structure is:
-        //              // [roundNumber, metricShortName, roundScore]
-
         //Declare empty variables that are used in each ROUND
         var questionData = [], //country name and value pairs for a given round
                 //possible structure [{"name":"___","value":##}]
-            answerData = [], //WHAT PLAYER ANSW"ERS -- STRUCTURE TBD ***
+           // answerData = [], //WHAT PLAYER ANSW"ERS -- STRUCTURE TBD ***
             roundData = {  //the data that will be presented on the Question page in a given round.
                 "metricShortName":"",
                 "metricDescription":"",
                 "round":1,
                 "score":0,
                 "screenName":"",
-                "countryAndValueData":[],
-                "countries":[],
-                "values":[],
-                "countryCodes":[]
+                "countryAndValueData":[]
+               // "countries":[],  DON'T NEED THESE ANYMORE
+               // "values":[],
+               // "countryCodes":[]
             }; 
 
         //Increment to next round
@@ -144,7 +140,7 @@ module.exports = function(req,res,next) {
             var urlWB = "http://api.worldbank.org/countries/all/indicators/"+whichMetricCode+"?format=json&&MRV=1&&per_page=400";
             console.log(urlWB);
 
-            var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ","ZF","B8","S2","XU","XC","XJ","1W"];
+            var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ","ZF","B8","S2","XU","XC","XJ","1W","XE"];
 
             request({url: urlWB, timeout: 6000}, function(error,response,body){
                 console.log("Hello from inside request function")
@@ -167,7 +163,7 @@ module.exports = function(req,res,next) {
 
                       if ((typeof countryValue === 'number') && !(isNaN(countryValue))) { //prune out NaN and null and undefined rows // for some reason, typeof NaN === 'number' returns true! ***
                         if (blackListedCountries.indexOf(countryCode) === -1) {
-                            questionData.push([countryName,countryCode,countryValue]);
+                            questionData.push([countryName,countryValue]);
                         }
                       };
                     };
@@ -179,7 +175,7 @@ module.exports = function(req,res,next) {
 
                 //SORT
 
-                questionData = sortArray(questionData);
+                questionData = sortArrayPairs(questionData);
 
                 //SELECT
 
@@ -194,18 +190,23 @@ module.exports = function(req,res,next) {
                 roundData.metricDescription = currentMetricObject.metricDescription;
                 roundData.countryAndValueData = questionData;
 
-                roundData.screen_name = req.session.screen_name; //****
+                roundData.screen_name = req.session.screen_name;
 
+                //Add Country & Value info to req.session so can check answers for correctness and scoring
+
+                req.session.countryAndValueData = roundData.countryAndValueData;
+                req.session.metricShortName = roundData.metricShortName;
+
+                //Increment nextRound to get ready for next question
                 req.session.nextRound = req.session.currentRound+1;
 
                 console.log("About to call next fun at end of NEW request call-back loop.")
                 console.log("Here is the data to be sent")
                 console.log(roundData);
-                nextFun(roundData); //CALLBACK AFTER ASYNC API REQUEST
-            });
 
-            // console.log("This is question data inside getDataWB")
-            // console.log(questionData);
+                //THIS IS KEY!  This is CALLBACK for after asynchronous API request
+                nextFun(roundData);
+            });
         };
 
         var getRoundData = function(roundNumber){

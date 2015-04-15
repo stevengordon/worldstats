@@ -12,17 +12,17 @@
 
 	<h2>Here's your information...</h2>
 	<ul>
-	<li>Screen name: <%=ejsProfile.playerObject.screen_name%></li>
-	<li>Email: <%=ejsProfile.playerObject.email%></li>
-	<li>Cumulative score: <%=ejsProfile.playerObject.cumulative_score%></li>
+	<li>Screen name: <%=ejsProfile[0].screen_name%></li>
+	<li>Email: <%=ejsProfile[0].email%></li>
+	<li>Cumulative score: <%=ejsProfile[0].cumulative_score%></li>
 	</ul>
 
 	
 
 
 	<h2>Here are your best scores</h2>
-	<%for (var i = 0; i < ejsProfile.score.length; i++) {
-		%> Score <%=ejsProfile.score[i].dataValues.game_score%>
+	<%for (var i = 0; i < ejsProfile[1].length; i++) {
+		%> Score <%=ejsProfile[1][i].dataValues.game_score%>
 	<% }; %>
 
 

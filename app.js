@@ -139,14 +139,19 @@ app.get('/logout', function(req,res){
 
 //Real profile page
 app.get('/profile', function(req,res){
+
     console.log("Hello from profile route");
+
     var scoreObject = {};
     var profileObject = {};
+    
     req.currentUser().then(function(foundPlayer){
         //console.log("This is player",foundPlayer);
         if (foundPlayer) {
             sql.Score.findAll({where: {PlayerId:req.session.userId}, limit: 3, order: '"game_score" DESC'}).then(function(myScores){
+
                // console.log(myScores);
+               
                scoreObject = myScores;
 
                console.log("length of scoreObject");
@@ -160,17 +165,28 @@ app.get('/profile', function(req,res){
                 console.log("scoreObject[0].dataValues.game_score")
                 console.log(scoreObject[0].dataValues.game_score);
                 
-            })
-
-            //BUT THIS LOG OF THE SAME ITEM DOES NOT -- SCOPE ISSUE
-            console.log("scoreObject[1].dataValues.game_score")
-            console.log(scoreObject[1].dataValues.game_score);
-
+            }) //end of myScores function
 
             console.log("This is scoreObject")
             console.log(scoreObject);
 
+            console.log("typeof scoreObject")
+            console.log(typeof scoreObject)
+
+            //BUT THIS LOG OF THE SAME ITEM DOES NOT -- SCOPE ISSUE
+           // console.log("scoreObject[1].dataValues.game_score")
+           // console.log(scoreObject[1].dataValues.game_score);
+
             profileObject = {"score":scoreObject,"playerObject":foundPlayer};
+
+            profileArray = [foundPlayer, scoreObject];
+
+
+            console.log("profileArray[1]");
+
+
+            console.log(profileArray[1]);
+
 
             console.log("profileObject.score")
             console.log(profileObject.score);
@@ -178,8 +194,9 @@ app.get('/profile', function(req,res){
             //<!-- Here is another score # on dataValues:
     //<%//=ejsProfile.scoreObject.dataValues[1].game_score%>
 
+            res.render('profile',{ejsProfile:profileArray});
 
-            res.render('profile',{ejsProfile:profileObject});
+            //res.render('profile',{ejsProfile:profileObject});
         } else {
             res.redirect('/login');
         }

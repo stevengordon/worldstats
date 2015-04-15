@@ -11,7 +11,9 @@ express-session
 method-override -- to enable PUT/PATCH and DELETE verbs
 pg
 pg-hstore
+request
 sequelize -- for database interaction
+sequelize-cli
 session
 **/
 
@@ -282,7 +284,7 @@ app.get('/startover', function(req,res){
 
 
 //Start the server listening on port 3000
-app.listen(3000, function (){
+app.listen(process.env.PORT || 3000, function (){ //This allows app to run either via Heroku *or * locally
     console.log("Don't blame me. I'm an interpreter. I'm not supposed to know a power socket from a computer terminal. ");
 });
 

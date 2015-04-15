@@ -189,7 +189,7 @@ app.get('/answer', function(req,res){
         playerAnswer.push(req.query[id]);
 
        // console.log("\n\n\nTHIS IS THE VAL",id, req.query[id]);
-    }
+    };
 
     for (var i = 0; i < answerCountryandValue.length; i++) {
         correctAnswer.push(answerCountryandValue[i][0]);
@@ -198,10 +198,48 @@ app.get('/answer', function(req,res){
     console.log("playerAnswer",playerAnswer);
     console.log("correctAnswer",correctAnswer);
 
-    //PROCESS ANSWER HERE -- or call function that does this
+    //Send player answer and real answer to get scored
 
-    res.render('answer.ejs',{ejsAnswer:playerAnswer});
-})
+    playerResults = compareAnswers(playerAnswer,answerCountryandValue);
+
+    //Use the score results to update score
+
+    req.session.gameScore += playerResults.numCorrect;
+
+    //ALSO NEED TO ADD INCREMENT TO PLAYER'S CUMULATIVE LIFETIME SCORE ***
+
+    console.log("playerResults")
+    console.log(playerResults);
+
+    res.render('answer.ejs',{ejsAnswer:playerResults});
+});
+
+var compareAnswers = function(playerAnswer,fullAnswer){
+    //this takes two arrays and compares how many items are the same and provides an object back with:
+    // {"numCorrect":#,
+    // "whichWrong":[index #s of wrong answer, wrong answer ];
+
+    console.log("Hello from compareAnswers");
+
+    var correctScore = 0;
+    var answerMatrix = [];
+
+    for (var i = 0; i < fullAnswer.length; i++) {
+        if (playerAnswer[i] === fullAnswer[i][0]) {
+            correctScore++;
+            answerMatrix.push([fullAnswer[i][0],fullAnswer[i][1],"Correct"]);
+        } else {
+            answerMatrix.push([fullAnswer[i][0],fullAnswer[i][1],playerAnswer[i]]);
+        }
+    };
+
+    var scoreKey = {
+        "numCorrect":correctScore,
+        "answerKey":answerMatrix
+    };
+
+    return scoreKey;
+};
 
 app.get('/nextquestion', function(req,res){
     if (req.session.nextRound >= req.session.maxRounds) { //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!

@@ -7,7 +7,7 @@ var session = require('express-session');
 var sql = require('./models'); //include the PostgreSQL database ***
 var app = express();
 
- //THESE ARE VARIOUS 'SUPPORTING' FUNCTIONS FOR PLAYBALL
+ //THESE ARE VARIOUS 'SUPPORTING' FUNCTIONS FOR PLAYBALL and game operation in general
 
 var getMetricInfo = function (metricNumber) {
     //This function takes in a metric number (ID # in SQL or, initially, hard-coded key in object) and returns an object with the essential information about each metric.
@@ -70,12 +70,34 @@ var sortArrayPairs = function(array){
     //This will be function that takes in an array and sorts it -- the catch is that the array is actually an array of objects, and it needs to sort each object by the "value" key pair in the object.
     //For now, it won't do anything -- but I want the placeholder function to be ready and it is called from other places.
 
-
-
-
-
-
     return array;
+};
+
+var compareAnswers = function(playerAnswer,fullAnswer){
+    //this takes two arrays and compares how many items are the same and provides an object back with:
+    // {"numCorrect":#,
+    // "whichWrong":[index #s of wrong answer, wrong answer ];
+
+    console.log("Hello from compareAnswers");
+
+    var correctScore = 0;
+    var answerMatrix = [];
+
+    for (var i = 0; i < fullAnswer.length; i++) {
+        if (playerAnswer[i] === realAnswer[i][0]) {
+            correctScore++;
+            answerMatrix.push([realAnswer[i][0],realAnswer[i][1],"Correct"]);
+        } else {
+            answerMatrix.push([realAnswer[i][0],realAnswer[i][1],playerAnswer[i]]);
+        }
+    };
+
+    var scoreKey = {
+        "numCorrect":correctScore,
+        "answerKey":answerMatrix
+    };
+
+    return scoreKey;
 };
 
 module.exports = function(req,res,next) {

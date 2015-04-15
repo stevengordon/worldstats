@@ -9,11 +9,11 @@
 	<% include partials/header.ejs %>
 </header>
 <body>
-	<h1>Hi, <%= ejsQuestionData.screen_name %>.</h1>
-	<h1>Question <%=ejsQuestionData.round%></h1>
+	<h3>Hi, <%= ejsQuestionData.screen_name %>.</h3>
+	<h2>Question <%=ejsQuestionData.round%>  Current score: <%=ejsQuestionData.score%></h2>
 
-	<h2>Match each country with the correct statistic about</h2>
-	<h2><%=ejsQuestionData.metricShortName%></h2>
+	<h3>Match each country with the correct statistic about</h3>
+	<h3><%=ejsQuestionData.metricShortName%></h3>
 
 <!-- 	<form action='/getanswerpage' method="GET">
 		<% ejsQuestionData.countryAndValueData.forEach(function(country){ %>
@@ -21,8 +21,8 @@
 		<% }) %>
 	</form> -->
 
-<table>
-	<tr>
+<table class = "large-text">
+	<tr class = "horizontal-borders">
 	<td>
 		<ul class = "sortable">
 			<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
@@ -62,8 +62,6 @@
 
 	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>
 
-	<p>Current round: <%=ejsQuestionData.round%></p>
-	<p>Current score: <%=ejsQuestionData.score%></p>
 
 <form id="answers" action="/answer" method="GET">
 	<% ejsQuestionData.countryAndValueData.forEach(function(data, id){ %>

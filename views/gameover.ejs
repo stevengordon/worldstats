@@ -8,13 +8,10 @@
 	<% include partials/header.ejs %>
 </header>
 <body>
-	<h1>Congratulations.  Game over!</h1>
+	<h1>Game over!</h1>
+	<h2>Congratulations!</h2>
 
-<!-- 	<%ejsGameSummary.forEach(function(data){ %>
-		<div><%=data[0]%></div>
-		<div><%=data[1]%></div>
-		<div><%=data[2]%></div>
-<% }%> -->
+	<h2>Your final score is: <%=ejsGameStats.finalScore%></h2>
 
 <form action="/startover" method="GET">
 	<button>Try again</button>

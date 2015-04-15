@@ -83,7 +83,7 @@ module.exports = function(req,res,next) {
     req.session.gameScore = 0; //How many points has player earned in this game so far?
     req.session.currentRound = 1; //Which round is player currently playing?
     req.session.nextRound = 1; //just define it this way for starting condition
-    req.session.maxRounds = 4; //How many rounds ends the game?
+    req.session.maxRounds = 3; //How many rounds ends the game?
     req.session.countriesPerRound = 4; //How many countries are displayed in a given round? Change this to make game harder or easier.  Maybe even pass this in as a parameter to playBall function for multiple level options...
     req.session.currentMetricNum = 0; //this is internal ID # of the current metric
     req.session.gameMetricOrder = []; //this is array, set once at the start of each game, with order of metrics to use this particular game
@@ -156,7 +156,7 @@ module.exports = function(req,res,next) {
                         countryCode = realData[i].country.id;
                         countryValue = (parseFloat(realData[i].value));
 
-                        console.log(countryName, countryCode, countryValue)
+                       // console.log(countryName, countryCode, countryValue)
 
                       if ((typeof countryValue === 'number') && !(isNaN(countryValue))) { //prune out NaN and null and undefined rows // for some reason, typeof NaN === 'number' returns true! ***
                         if (blackListedCountries.indexOf(countryCode) === -1) {
@@ -164,8 +164,8 @@ module.exports = function(req,res,next) {
                         }
                       };
                     };
-                        console.log("This is questionData just after loop");
-                        console.log(questionData);
+                       // console.log("This is questionData just after loop");
+                       // console.log(questionData);
                 }
 
                 //NOW THAT WE HAVE *FULL* DATA SET FROM API, REDUCE IT TO WHAT IS NEEDED FOR THE ROUND

@@ -252,7 +252,17 @@ app.get('/nextquestion', function(req,res){
     if (req.session.nextRound >= req.session.maxRounds) { //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!
         console.log("About to render gameover");
         console.log(req.session.gameSummary);
-       res.render('gameover.ejs',{ejsGameSummary:req.session.gameSummary});
+
+        //Assemble object with data to present on gameover page 
+        //FOR NOW JUST PASS FINAL SCORE AS MVP APPROACH ***
+
+        var gameFinalStats = {"finalScore":req.session.gameScore}; //NEED TO ADD ADDITIONAL DATA TO OBJECT
+
+        console.log("req.session.gameScore is",req.session.gameScore);
+
+
+
+       res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
     } else { //still playing, so reload question page
         res.redirect('/question');
     }

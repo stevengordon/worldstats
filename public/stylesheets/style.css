@@ -9,12 +9,15 @@ ul.source, ul.target {
   border-radius: 3px;
   list-style-type: none;
   list-style-position: inside;
+  font-size: 30px;
 }
 ul.source {
   border-color: #f8e0b1;
+    font-size: 30px;
 }
 ul.target {
   border-color: #add38d;
+    font-size: 30px;
 }
 .source li, .target li {
   margin: 5px;
@@ -23,32 +26,39 @@ ul.target {
   -moz-border-radius: 4px;
   border-radius: 4px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    font-size: 30px;
 }
 .source li {
   background-color: #fcf8e3;
   border: 1px solid #fbeed5;
   color: #c09853;
+    font-size: 30px;
 }
 .target li {
   background-color: #ebf5e6;
   border: 1px solid #d6e9c6;
   color: #468847;
+    font-size: 30px;
 }
 .sortable-dragging {
   border-color: #ccc !important;
   background-color: #4738EB !important;
   color: #bbb !important;
+    font-size: 30px;
 }
 .sortable-placeholder {
   height: 40px;
+    font-size: 30px;
 }
 .source .sortable-placeholder {
   border: 2px dashed #f8e0b1 !important;
   background-color: #fefcf5 !important;
+    font-size: 30px;
 }
 .target .sortable-placeholder {
   border: 2px dashed #add38d !important;
   background-color: #f6fbf4 !important;
+    font-size: 30px;
 }
 
 .correct {
@@ -57,4 +67,13 @@ ul.target {
 
 .wrong {
   background-color: #DE3139;
+}
+
+.large-text
+{ font-size: 30px;}
+
+.horizontal-borders {
+  border-top-width: 3 px;
+  border-color: green;
+  border-style: solid;
 }

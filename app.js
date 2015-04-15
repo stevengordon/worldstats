@@ -273,8 +273,8 @@ app.get('/nextquestion', function(req,res){
         sql.Score.create({
             game_score:req.session.gameScore,
             rounds_played:req.session.maxRounds, 
-            date_played:now //, 
-           // PlayerId: req.session.userId
+            date_played:now,
+            PlayerId: req.session.userId
         }).then(function(){
             res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
         })

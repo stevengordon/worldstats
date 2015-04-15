@@ -20,35 +20,20 @@
 			<div><%=country[0]%>, (<%=country[1]%>), <%=country[2]%>: <input type="radio"></div>
 		<% }) %>
 	</form> -->
-
-<table>
-	<tr>
-	<td>
-		<ul class = "sortable">
-			<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
-				<li><%= data[0] %></li>
-			<% }) %>
-		</ul>
-	</td>
-	<td>
-		<ul>
-			<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
-				<li><%= data[1] %></li>
-			<% }) %>
-		</ul>
-	</td>
-	</tr>
-</table>
-
-<!-- <ul>
+<ul class="sortable">
+	<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
+		<li><%= data[0] %></li>
+	<% }) %>
+</ul>
+<ul>
 	<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
 		<li><%= data[1] %></li>
 	<% }) %>
-</ul> -->
+</ul>
 <script src="jquery.sortable.js"></script>
 <script>
     $('.sortable').sortable().bind('sortupdate', function() {
-    	//console.log(this);
+    	console.log(this);
     	Array.prototype.forEach.call(this.children, function(el,id){
     		$("#"+id).val(el.innerHTML);
     	});
@@ -58,7 +43,7 @@
 
 
 
-	<!-- <p>	<%=ejsQuestionData.countryAndValueData%></p> -->
+	<p>	<%=ejsQuestionData.countryAndValueData%></p>
 
 	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>
 

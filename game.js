@@ -140,7 +140,7 @@ module.exports = function(req,res,next) {
             var urlWB = "http://api.worldbank.org/countries/all/indicators/"+whichMetricCode+"?format=json&&MRV=1&&per_page=400";
             console.log(urlWB);
 
-            var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ","ZF","B8","S2","XU","XC","XJ","1W","XE"];
+            var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ","ZF","B8","S2","XU","XC","XJ","1W","XE","ZG","ZF"];
 
             request({url: urlWB, timeout: 6000}, function(error,response,body){
                 console.log("Hello from inside request function")

@@ -251,8 +251,9 @@ var compareAnswers = function(playerAnswer,fullAnswer){
 };
 
 app.get('/nextquestion', function(req,res){
-    if (req.session.nextRound >= req.session.maxRounds) { //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!
-        console.log("About to render gameover");
+    if (req.session.nextRound >= req.session.maxRounds) { 
+        //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!
+        console.log("Start gameover process");
         console.log(req.session.gameSummary);
 
         //Assemble object with data to present on gameover page 
@@ -261,14 +262,40 @@ app.get('/nextquestion', function(req,res){
         var gameFinalStats = {"finalScore":req.session.gameScore}; //NEED TO ADD ADDITIONAL DATA TO OBJECT
 
         console.log("req.session.gameScore is",req.session.gameScore);
+        console.log("req.session.maxRounds is ",req.session.maxRounds);
 
+        //Post scores to Score table in SQL and then render gameover page
 
+        //POSTING DIRECTLY, RATHER THAN CALLING AN INSTANCE METHOD
 
-       res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
+        var now = new Date();
+
+        sql.Score.create({
+            game_score:req.session.gameScore,
+            rounds_played:req.session.maxRounds, 
+            date_played:now //, 
+           // PlayerId: req.session.userId
+        }).then(function(){
+            res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
+        })
+
+        // console.log("About to call addNewScore")
+
+        // req.currentUser().then(function(who){
+        //     if (who) {
+        //         who.addNewScore(req.session.gameScore,req.session.maxRounds).then(function(){
+        //             res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
+        //         })
+        //     } else {
+        //         //here if no current user found... should not happen if authorization works right
+        //         res.redirect('/login');
+        //     }
+        // })
+
     } else { //still playing, so reload question page
         res.redirect('/question');
     }
-})
+});
 
 
 // //Postgame page

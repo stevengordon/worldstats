@@ -33,7 +33,26 @@ module.exports = function(sequelize, DataTypes) {
       checkPassword: function(password) {
         console.log("Hello from inside checkPassword!")
         return bcrypt.compareSync(password, this.password_digest);
-      }
+      }//,
+
+      // //WHY DOES THIS NOT WORK? WHAT IS SCOPE OF INSTANCE METHOD?
+      // addNewScore: function(newScore,newRounds) {
+      //   console.log("Hello from addNewScore");
+
+      //   var now = new Date(); //this is the current date
+        
+      //   console.log("new data to add is")
+      //   console.log("newScore",newScore);
+      //   console.log("newRounds",newRounds);
+      //   console.log("this.id", this.id);
+
+      //   //console.log("req.session.userId",req.session.userId);
+      //   console.log("current date", now);
+
+      //   //THE NEXT LINE IS NOT WORKING
+      //   return sql.Score.create({game_score:newScore, rounds_played:newRounds, date_played:now, PlayerId: this.id}); //or this.id
+      //   //STILL TO CONSIDER ADDING: Put # of countries per question into Score table so can adjust for harder/easier games
+      // }
     },
     classMethods: {
       encryptPassword: function(password) {

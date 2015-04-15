@@ -73,32 +73,7 @@ var sortArrayPairs = function(array){
     return array;
 };
 
-var compareAnswers = function(playerAnswer,fullAnswer){
-    //this takes two arrays and compares how many items are the same and provides an object back with:
-    // {"numCorrect":#,
-    // "whichWrong":[index #s of wrong answer, wrong answer ];
 
-    console.log("Hello from compareAnswers");
-
-    var correctScore = 0;
-    var answerMatrix = [];
-
-    for (var i = 0; i < fullAnswer.length; i++) {
-        if (playerAnswer[i] === realAnswer[i][0]) {
-            correctScore++;
-            answerMatrix.push([realAnswer[i][0],realAnswer[i][1],"Correct"]);
-        } else {
-            answerMatrix.push([realAnswer[i][0],realAnswer[i][1],playerAnswer[i]]);
-        }
-    };
-
-    var scoreKey = {
-        "numCorrect":correctScore,
-        "answerKey":answerMatrix
-    };
-
-    return scoreKey;
-};
 
 module.exports = function(req,res,next) {
     req.setupGame = function(){
@@ -108,7 +83,7 @@ module.exports = function(req,res,next) {
     req.session.gameScore = 0; //How many points has player earned in this game so far?
     req.session.currentRound = 1; //Which round is player currently playing?
     req.session.nextRound = 1; //just define it this way for starting condition
-    req.session.maxRounds = 10; //How many rounds ends the game?
+    req.session.maxRounds = 4; //How many rounds ends the game?
     req.session.countriesPerRound = 4; //How many countries are displayed in a given round? Change this to make game harder or easier.  Maybe even pass this in as a parameter to playBall function for multiple level options...
     req.session.currentMetricNum = 0; //this is internal ID # of the current metric
     req.session.gameMetricOrder = []; //this is array, set once at the start of each game, with order of metrics to use this particular game

@@ -67,7 +67,7 @@
 
 <form id="answers" action="/answer" method="GET">
 	<% ejsQuestionData.countryAndValueData.forEach(function(data, id){ %>
-		<input style="display:none;" type="text" value="<%= data[1] %>" name="<%=id%>" id="<%=id%>"/>
+		<input style="display:none;" type="text" value="<%= data[0] %>" name="<%=id%>" id="<%=id%>"/>
 	<% }) %>
 	<button>Submit</button>
 </form>

@@ -113,7 +113,7 @@ app.post('/login', function(req,res){
                 req.login(user);
                 res.redirect('/pregame');
             } else {
-                 //this means no user was returned (false was returned), so login credentials invalid
+                 //this means no user wa`s returned (false was returned), so login credentials invalid
                 res.render('login.ejs'); //*** Add "login failed" error message to user
             }
         })
@@ -208,6 +208,13 @@ app.get('/answer', function(req,res){
 
     //ALSO NEED TO ADD INCREMENT TO PLAYER'S CUMULATIVE LIFETIME SCORE ***
 
+    //Add info to gameSummary which is in req.session
+
+    req.session.gameSummary.push([req.session.currentRound,req.session.metricShortName,req.session.gameScore]);
+
+    console.log("this is gameSummary")
+    console.log(req.session.gameSummary);
+
     console.log("playerResults")
     console.log(playerResults);
 
@@ -243,17 +250,26 @@ var compareAnswers = function(playerAnswer,fullAnswer){
 
 app.get('/nextquestion', function(req,res){
     if (req.session.nextRound >= req.session.maxRounds) { //nextRound was already incremented in game.js -- so if nextRound is already beyond maxRounds, then game over!
-        res.send("Game over!");
+        console.log("About to render gameover");
+        console.log(req.session.gameSummary);
+       res.render('gameover.ejs',{ejsGameSummary:req.session.gameSummary});
     } else { //still playing, so reload question page
         res.redirect('/question');
     }
 })
 
 
-//Postgame page
-app.get('/postgame',function(req,res){
-    res.send("Game over.  This is post game page");
+// //Postgame page
+// app.get('/postgame',function(req,res){
+//     res.render('gameover.ejs',{ejsGameSummary:req.session.gameSummary});
+// });
+
+app.get('/startover', function(req,res){
+    console.log("Hello from startover route");
+    res.redirect('/pregame');
 });
+
+
 
 //Start the server listening on port 3000
 app.listen(3000, function (){

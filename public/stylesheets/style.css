@@ -50,3 +50,11 @@ ul.target {
   border: 2px dashed #add38d !important;
   background-color: #f6fbf4 !important;
 }
+
+.correct {
+  background-color: #37C440 ;
+}
+
+.wrong {
+  background-color: #DE3139;
+}

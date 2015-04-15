@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<% include partials/head.ejs %>
+	<title>Game Over</title>
+</head>
+<header>
+	<% include partials/header.ejs %>
+</header>
+<body>
+	<h1>Congratulations.  Game over!</h1>
+
+<!-- 	<%ejsGameSummary.forEach(function(data){ %>
+		<div><%=data[0]%></div>
+		<div><%=data[1]%></div>
+		<div><%=data[2]%></div>
+<% }%> -->
+
+<form action="/startover" method="GET">
+	<button>Try again</button>
+</form>
+
+</body>
+</html>

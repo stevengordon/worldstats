@@ -121,6 +121,12 @@ app.post('/login', function(req,res){
         })
 });
 
+//Logout page
+app.get('/logout', function(req,res){
+    req.logout();
+    res.redirect('/');
+});
+
 //Private routes that are only available to players after log-in
 
 //Profile page -- for edit
@@ -133,9 +139,47 @@ app.post('/login', function(req,res){
 
 //Real profile page
 app.get('/profile', function(req,res){
+    console.log("Hello from profile route");
+    var scoreObject = {};
+    var profileObject = {};
     req.currentUser().then(function(foundPlayer){
+        //console.log("This is player",foundPlayer);
         if (foundPlayer) {
-            res.render('profile',{ejsPlayer:foundPlayer});
+            sql.Score.findAll({where: {PlayerId:req.session.userId}, limit: 3, order: '"game_score" DESC'}).then(function(myScores){
+               // console.log(myScores);
+               scoreObject = myScores;
+
+               console.log("length of scoreObject");
+               console.log(scoreObject.length);
+
+               //THIS NEXT LOG WORKS
+
+                console.log("scoreObject[1].dataValues.game_score")
+                console.log(scoreObject[1].dataValues.game_score);
+
+                console.log("scoreObject[0].dataValues.game_score")
+                console.log(scoreObject[0].dataValues.game_score);
+                
+            })
+
+            //BUT THIS LOG OF THE SAME ITEM DOES NOT -- SCOPE ISSUE
+            console.log("scoreObject[1].dataValues.game_score")
+            console.log(scoreObject[1].dataValues.game_score);
+
+
+            console.log("This is scoreObject")
+            console.log(scoreObject);
+
+            profileObject = {"score":scoreObject,"playerObject":foundPlayer};
+
+            console.log("profileObject.score")
+            console.log(profileObject.score);
+
+            //<!-- Here is another score # on dataValues:
+    //<%//=ejsProfile.scoreObject.dataValues[1].game_score%>
+
+
+            res.render('profile',{ejsProfile:profileObject});
         } else {
             res.redirect('/login');
         }
@@ -263,6 +307,7 @@ app.get('/nextquestion', function(req,res){
 
         console.log("req.session.gameScore is",req.session.gameScore);
         console.log("req.session.maxRounds is ",req.session.maxRounds);
+        console.log("req.session.countriesPerRound is ",req.session.countriesPerRound);
 
         //Post scores to Score table in SQL and then render gameover page
 
@@ -272,9 +317,10 @@ app.get('/nextquestion', function(req,res){
 
         sql.Score.create({
             game_score:req.session.gameScore,
-            rounds_played:req.session.maxRounds, 
+            rounds_played:req.session.maxRounds,
             date_played:now,
-            PlayerId: req.session.userId
+            PlayerId: req.session.userId,
+            countries_per_round: req.session.countriesPerRound
         }).then(function(){
             res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
         })

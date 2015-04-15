@@ -10,12 +10,20 @@
 <body>
 	<h1>Profile page</h1>
 
-	<h2>Here's what we've got...</h2>
+	<h2>Here's your information...</h2>
 	<ul>
-	<li>Screen name: <%=ejsPlayer.screen_name%></li>
-	<li>Email: <%=ejsPlayer.email%></li>
-	<li>Cumulative score: <%=ejsPlayer.cumulative_score%></li>
+	<li>Screen name: <%=ejsProfile.playerObject.screen_name%></li>
+	<li>Email: <%=ejsProfile.playerObject.email%></li>
+	<li>Cumulative score: <%=ejsProfile.playerObject.cumulative_score%></li>
 	</ul>
+
+	
+
+
+	<h2>Here are your best scores</h2>
+	<%for (var i = 0; i < ejsProfile.score.length; i++) {
+		%> Score <%=ejsProfile.score[i].dataValues.game_score%>
+	<% }; %>
 
 
 <!-- 	<form action="/login" method="POST">

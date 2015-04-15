@@ -309,9 +309,26 @@ app.get('/nextquestion', function(req,res){
         console.log("req.session.maxRounds is ",req.session.maxRounds);
         console.log("req.session.countriesPerRound is ",req.session.countriesPerRound);
 
+        //Increment this player's CUMULATIVE score in Player table
+
+
+        sql.Player.find({where:{id:req.session.userId}}).then(function(whoPlayed){
+            console.log("Hello from cumulative update")
+            var lifetime = whoPlayed.cumulative_score;
+
+            console.log("Prior lifetime score ",lifetime);
+
+            lifetime += req.session.gameScore;
+
+            console.log("New lifetime score ",lifetime);
+
+            whoPlayed.cumulative_score = lifetime; whoPlayed.save();})
+
         //Post scores to Score table in SQL and then render gameover page
 
-        //POSTING DIRECTLY, RATHER THAN CALLING AN INSTANCE METHOD
+            //POSTING DIRECTLY, RATHER THAN CALLING AN INSTANCE METHOD
+
+
 
         var now = new Date();
 

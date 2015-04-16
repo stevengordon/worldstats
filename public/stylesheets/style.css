@@ -74,7 +74,11 @@ ul.target {
 }
 
 .large-text
-{ font-size: 30px;}
+{ font-size: 30px;
+padding-left: 1px;
+margin-left: 100px;
+padding-right: 10px;
+}
 
 .horizontal-borders {
   border-top-width: 3 px;

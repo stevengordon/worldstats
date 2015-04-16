@@ -63,6 +63,18 @@ app.use('/', function(req,res,next){
     next(); //move on to next middleware
 }, gameStuff);
 
+var loggedIn = function(req,res,next) {
+    if (req.session.userId) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+};
+
+//For every page that should require logging in, apply loggedIn middleware below:
+app.use('/question', loggedIn);
+app.use('/answer',loggedIn);
+
 //Define the various ROUTES
 
 //Public routes available without login are: 1) welcome page, 2) high scores page, 3) signup page
@@ -137,6 +149,7 @@ app.get('/logout', function(req,res){
 //     res.send(currentUser);
 // })
 
+
 //Real profile page
 app.get('/profile', function(req,res){
 
@@ -146,55 +159,57 @@ app.get('/profile', function(req,res){
     var profileObject = {};
     
     req.currentUser().then(function(foundPlayer){
-        //console.log("This is player",foundPlayer);
+        console.log("This is found player",foundPlayer);
         if (foundPlayer) {
+            console.log("We just iffed")
             sql.Score.findAll({where: {PlayerId:req.session.userId}, limit: 3, order: '"game_score" DESC'}).then(function(myScores){
 
-               // console.log(myScores);
+            //     console.log("This is myScores Mike")
+            //    console.log(myScores);
                
                scoreObject = myScores;
 
-               console.log("length of scoreObject");
-               console.log(scoreObject.length);
+            //    console.log("length of scoreObject");
+            //    console.log(scoreObject.length);
 
-               //THIS NEXT LOG WORKS
+            //    //THIS NEXT LOG WORKS
 
-                console.log("scoreObject[1].dataValues.game_score")
-                console.log(scoreObject[1].dataValues.game_score);
+            //     console.log("scoreObject[1].dataValues.game_score")
+            //     console.log(scoreObject[1].dataValues.game_score);
 
-                console.log("scoreObject[0].dataValues.game_score")
-                console.log(scoreObject[0].dataValues.game_score);
+            //     console.log("scoreObject[0].dataValues.game_score")
+            //     console.log(scoreObject[0].dataValues.game_score);
                 
-            }) //end of myScores function
+             profileObject = {"score":scoreObject,"player":foundPlayer};
 
-            console.log("This is scoreObject")
-            console.log(scoreObject);
+            // profileArray = [foundPlayer, scoreObject];
+            // console.log("This is scoreObject")
+            // console.log(scoreObject);
 
-            console.log("typeof scoreObject")
-            console.log(typeof scoreObject)
+            res.render('profile',{ejsProfile:profileObject});
+             }) //end of myScores function
+
+
+            // console.log("typeof scoreObject")
+            // console.log(typeof scoreObject)
 
             //BUT THIS LOG OF THE SAME ITEM DOES NOT -- SCOPE ISSUE
            // console.log("scoreObject[1].dataValues.game_score")
            // console.log(scoreObject[1].dataValues.game_score);
 
-            profileObject = {"score":scoreObject,"playerObject":foundPlayer};
 
-            profileArray = [foundPlayer, scoreObject];
-
-
-            console.log("profileArray[1]");
+            // console.log("profileArray[1]");
 
 
-            console.log(profileArray[1]);
+            // console.log(profileArray[1]);
 
 
-            console.log("profileObject.score")
-            console.log(profileObject.score);
+            // console.log("profileObject.score")
+            // console.log(profileObject.score);
 
             //<!-- Here is another score # on dataValues:
     //<%//=ejsProfile.scoreObject.dataValues[1].game_score%>
 
-            res.render('profile',{ejsProfile:profileArray});
 
             //res.render('profile',{ejsProfile:profileObject});
         } else {
@@ -345,7 +360,7 @@ app.get('/nextquestion', function(req,res){
 
             //POSTING DIRECTLY, RATHER THAN CALLING AN INSTANCE METHOD
 
-
+            console.log("Hello from inbetween the two SQL calls")
 
         var now = new Date();
 
@@ -356,6 +371,7 @@ app.get('/nextquestion', function(req,res){
             PlayerId: req.session.userId,
             countries_per_round: req.session.countriesPerRound
         }).then(function(){
+            console.log("COUNTRIED PER ROUND", req.session.countriesPerRound);
             res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
         })
 

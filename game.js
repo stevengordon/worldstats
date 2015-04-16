@@ -205,7 +205,7 @@ module.exports = function(req,res,next) {
                 roundData.metricShortName = currentMetricObject.metricShortName;
                 roundData.metricDescription = currentMetricObject.metricDescription;
                 roundData.countryAndValueData = questionData;
-                roundData.randomData = randomList;
+                roundData.randomList = randomList;
 
                 roundData.screen_name = req.session.screen_name;
 

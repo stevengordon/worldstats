@@ -2,12 +2,65 @@
 <html lang="en">
 <head>
 	<% include partials/head.ejs %>
-	<title>WorldStats Welcome</title>
+	<title>WorldStats home page</title>
 </head>
 <header>
-	<% include partials/header.ejs %>
+	<% include partials/headerLoggedOut.ejs %>
+
+<!--   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+       <div class="navbar-header">
+          <a class="navbar-brand" href="/signup">Create account</a>
+          <a class="navbar-brand" href="/login">Login</a>
+       </div>
+     </div>
+   </nav> -->
+
 </header>
-<body>
-	<h1>Welcome to WorldStats</h1>
+
+<body class = "full">
+
+<div class = "full">
+<div class = "overlay-text full container">
+	<div class = "row">
+		<div class = "col-xs-2">
+		</div>
+		<div class = "col-xs-9">
+	<b>Our world is large and diverse.</b>
+		</div>
+		<div class = "col-xs-1">
+		</div>
+	</div>
+
+	<div class = "row">
+		<div class = "col-xs-2">
+		</div>
+		<div class = "col-xs-9">
+	<b>Maybe even more than you thought.</b>
+		</div>
+		<div class = "col-xs-1">
+		</div>
+	</div>
+</div>
+
+<div class = "full container">
+  <div class = "row">
+    <div class = "col-xs-2">
+    </div>
+    <div class = "col-xs-3 offset=2 box-text">
+    <a href="/signup">Create WorldStats account</a>
+    </div>
+    <div class = "col-xs-2">
+    </div>
+    <div class = "col-xs-3 box-text">
+    <a href="/login">Log in & play WorldStats</a>
+    </div>
+    <div class = "col-xs-2">
+    </div>
+  </div>
+</div>
+
+
+
 </body>
 </html>

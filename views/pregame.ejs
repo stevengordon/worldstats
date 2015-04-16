@@ -5,20 +5,31 @@
 	<title>Pregame</title>
 </head>
 <header>
-	<% include partials/header.ejs %>
+	<% include partials/headerLoggedIn.ejs %>
 </header>
 <body>
-	<h1>Pregame page</h1>
 
-<h3>Welcome, <%=ejsFoundPlayer.screen_name%> </h3>
+<h2>Welcome, <%=ejsFoundPlayer.screen_name%> </h2>
+
+<h2> The rules for WorldStats are simple:</h3>
+<h3>
+<ul>
+<li>Each question covers a different measurement about the differences among countries.</li>
+<li>Drag the country names into the right order to match their correct values.</li>
+<li>One point for each match that you make correctly.</li>
+<li>All the data comes from the World Bank.</li>
+</ul>
+</h3>
+<div class="btn-group btn-group-justified spaced-out" role="group" aria-label="Justified button group">
+      <a href="/startgame/2" class="btn btn-default sg-easy" role="button"><h3>Play in easy mode:<br> compare 2 countries at a time</h3></a>
+      <a href="/startgame/4" class="btn btn-default sg-regular" role="button"><h3>Play in regular mode:<br>compare 4 countries</h3></a>
+      <a href="/startgame/6" class="btn btn-default sg-hard" role="button"><h3>Play the insane mode:<br>compare 6 countries</h3></a>
+</div>
+
+
 
 <a href="/question">Start playing!</a>
+</div>
 
-
-<!-- 	<form action="/login" method="POST">
-		<input type="text" name="loginScreenName" placeholder="Screen name">
-		<input type="password" name="loginPassword" placeholder="Password">
-		<button>Login</button>
-	</form> -->
 </body>
 </html>

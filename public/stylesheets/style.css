@@ -1,3 +1,5 @@
+/*
+These first classes are for SORTABLE module.  DO NOT CHANGE */
 ul.source, ul.target {
   min-height: 50px;
   margin: 0px 25px 10px 0px;
@@ -61,6 +63,8 @@ ul.target {
     font-size: 30px;
 }
 
+/* These classes I added for ANSWER page */
+
 .correct {
   background-color: #37C440 ;
 }
@@ -77,3 +81,56 @@ ul.target {
   border-color: green;
   border-style: solid;
 }
+
+/* Bootstrap template classes */
+
+body {
+    margin-top: 50px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.full {
+    background: url('/images/IntlFlags.jpg') center center no-repeat fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+
+.overlay-text {
+    font-size: 4em;
+    font-family: helvetica; 
+    color: white;
+    margin-top: 140px;
+}
+
+.box-text {
+    background-color: #083ACF;
+    font-size: 2em;
+    font-family: helvetica; 
+    color: white;
+    margin-top: 50px;
+}
+
+.sg-easy {
+  background-color: orange;
+}
+
+.sg-regular {
+  background-color: green;
+}
+
+.sg-hard {
+  background-color: red;
+}
+
+.spaced-out {
+  padding-top: 50px;
+}
+
+
+.navbar {
+  background-color: #083ACF;
+}
+
+

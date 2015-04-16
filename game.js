@@ -57,13 +57,18 @@ var randomOrder = function(maximum){
             return order;
         };
 
-var randomSelection = function(quantity,maximum){
+var randomSelection = function(quantity,maximum,allowZero){
     //return array of QUANTITY numbers from 0 to MAXIMUM without any duplicates
 
     var randomList = [];
+    var offset = 0;
+
+    if (!allowZero) {
+        offset = 1;
+    };
 
     do{
-        num = Math.floor(Math.random()*maximum);
+        num = Math.floor(Math.random()*maximum)+offset;
         if (randomList.indexOf(num) === -1) {
             randomList.push(num);
         };
@@ -75,7 +80,7 @@ var randomSelection = function(quantity,maximum){
 var randomReorder = function(oldArray){
     //this function returns a new array of arrays with the same elements as the old arrays but with the 0th objects in a new, random order
 
-    var newPattern = randomSelection(oldArray.length,oldArray.length);
+    var newPattern = randomSelection(oldArray.length,oldArray.length,true);
     var newArray = [];
     
     for (var i = 0; i < newPattern.length; i++) {
@@ -96,6 +101,7 @@ var sortArrayPairs = function(array){
 module.exports = function(req,res,next) {
     req.setupGame = function(){
     console.log("Hello from req.setupGame");
+    console.log("Yoda")
         //add initial values to req.session.gameScore (example)
         //call this from pregame when ready to play
     req.session.gameScore = 0; //How many points has player earned in this game so far?
@@ -112,11 +118,11 @@ module.exports = function(req,res,next) {
 
     //Choose a random order of metrics before the first round
     //req.session.gameMetricOrder = randomOrder(req.session.maxRounds); //OLD WAY -- Only randomized within first maxRounds # of metrics -- so if playing game of 3 rounds, only used 1st 3 metrics. Not right.
-    req.session.gameMetricOrder = randomSelection(req.session.maxRounds,10); //This should randomize using all of the 10 metrics in metricObject.  If there were not scope issues, then could use: Object.keys(metricObject).length to get # of metrics in metricObject, but it is not available here
-
-    };
+    req.session.gameMetricOrder = randomSelection(req.session.maxRounds,10,false); //This should randomize using all of the 10 metrics in metricObject.  If there were not scope issues, then could use: Object.keys(metricObject).length to get # of metrics in metricObject, but it is not available here
     console.log("Game order -- inside of req.setupGame");
     console.log(req.session.gameMetricOrder);
+
+    };
 
     req.playBall = function(nextFun) {
         console.log("Hello from playBall");
@@ -278,7 +284,7 @@ module.exports = function(req,res,next) {
 
         if (currentMetricObject.selectionType === "random"){
             console.log("I am random.  This is good");
-            whichLines = randomSelection(req.session.countriesPerRound,highestCountry);
+            whichLines = randomSelection(req.session.countriesPerRound,highestCountry,true);
         };
 
         if (currentMetricObject.selectionType === "quartiles"){

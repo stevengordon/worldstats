@@ -73,8 +73,6 @@ var sortArrayPairs = function(array){
     return array;
 };
 
-
-
 module.exports = function(req,res,next) {
     req.setupGame = function(){
     console.log("Hello from req.setupGame");

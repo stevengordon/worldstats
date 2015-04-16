@@ -27,7 +27,7 @@ var session = require('express-session');
 var sql = require('./models'); //include the PostgreSQL database ***
 var app = express(); //begin express **
 
-// Mike added
+//This is secondary JS file with most of the game logic
 var gameStuff = require('./game');
 
 //APP.SET to set main settings
@@ -61,7 +61,8 @@ app.use('/', function(req,res,next){
         req.user = null;
     };
     next(); //move on to next middleware
-}, gameStuff);
+    },
+    gameStuff); //can only have one '/' level app to use, so put in gameStuff here
 
 var loggedIn = function(req,res,next) {
     if (req.session.userId) {
@@ -71,9 +72,12 @@ var loggedIn = function(req,res,next) {
     }
 };
 
-//For every page that should require logging in, apply loggedIn middleware below:
+//For every page that should be limited when a Player is logged in, apply loggedIn middleware below:
 app.use('/question', loggedIn);
 app.use('/answer',loggedIn);
+app.use('/profile',loggedIn);
+app.use('/pregame',loggedIn);
+app.use('/nextquestion',loggedIn);
 
 //Define the various ROUTES
 

@@ -73,10 +73,10 @@ var loggedIn = function(req,res,next) {
 };
 
 //For every page that should be limited when a Player is logged in, apply loggedIn middleware below:
+app.use('/profile',loggedIn);
+//app.use('/pregame',loggedIn); //FOR SOME REASON THIS MAY BE CAUSING CONFLICT WITH pregame's own authorization
 app.use('/question', loggedIn);
 app.use('/answer',loggedIn);
-app.use('/profile',loggedIn);
-app.use('/pregame',loggedIn);
 app.use('/nextquestion',loggedIn);
 
 //Define the various ROUTES
@@ -144,6 +144,7 @@ app.get('/logout', function(req,res){
 });
 
 //Private routes that are only available to players after log-in
+//Authorization is handled via LoggedIn middleware function
 
 //Profile page -- for edit
 // app.get('/players/:id', function(req,res){ //*** STILL TO CONFIRM THIS WORKS AS URL PARAM
@@ -153,8 +154,7 @@ app.get('/logout', function(req,res){
 //     res.send(currentUser);
 // })
 
-
-//Real profile page
+//Profile page
 app.get('/profile', function(req,res){
 
     console.log("Hello from profile route");
@@ -163,59 +163,16 @@ app.get('/profile', function(req,res){
     var profileObject = {};
     
     req.currentUser().then(function(foundPlayer){
-        console.log("This is found player",foundPlayer);
+        //console.log("This is found player",foundPlayer);
         if (foundPlayer) {
-            console.log("We just iffed")
             sql.Score.findAll({where: {PlayerId:req.session.userId}, limit: 3, order: '"game_score" DESC'}).then(function(myScores){
-
-            //     console.log("This is myScores Mike")
-            //    console.log(myScores);
                
-               scoreObject = myScores;
+                scoreObject = myScores;
+            
+                profileObject = {"score":scoreObject,"player":foundPlayer};
 
-            //    console.log("length of scoreObject");
-            //    console.log(scoreObject.length);
-
-            //    //THIS NEXT LOG WORKS
-
-            //     console.log("scoreObject[1].dataValues.game_score")
-            //     console.log(scoreObject[1].dataValues.game_score);
-
-            //     console.log("scoreObject[0].dataValues.game_score")
-            //     console.log(scoreObject[0].dataValues.game_score);
-                
-             profileObject = {"score":scoreObject,"player":foundPlayer};
-
-            // profileArray = [foundPlayer, scoreObject];
-            // console.log("This is scoreObject")
-            // console.log(scoreObject);
-
-            res.render('profile',{ejsProfile:profileObject});
-             }) //end of myScores function
-
-
-            // console.log("typeof scoreObject")
-            // console.log(typeof scoreObject)
-
-            //BUT THIS LOG OF THE SAME ITEM DOES NOT -- SCOPE ISSUE
-           // console.log("scoreObject[1].dataValues.game_score")
-           // console.log(scoreObject[1].dataValues.game_score);
-
-
-            // console.log("profileArray[1]");
-
-
-            // console.log(profileArray[1]);
-
-
-            // console.log("profileObject.score")
-            // console.log(profileObject.score);
-
-            //<!-- Here is another score # on dataValues:
-    //<%//=ejsProfile.scoreObject.dataValues[1].game_score%>
-
-
-            //res.render('profile',{ejsProfile:profileObject});
+                res.render('profile',{ejsProfile:profileObject});
+             })  //end of myScores function
         } else {
             res.redirect('/login');
         }
@@ -239,7 +196,7 @@ app.get('/isworking', function(req,res){
 //Pregame page
 app.get('/pregame', function(req,res){
     req.currentUser().then(function(foundPlayer){
-        if (foundPlayer) {
+        if (foundPlayer) { //This if is redundant -- but will leave it to have Player name on pregame page
             req.setupGame(); //initialize what is needed for the game
             res.render('pregame',{ejsFoundPlayer:foundPlayer});
         } else {
@@ -259,9 +216,6 @@ app.get('/question', function(req,res){
 //Answer page
 app.get('/answer', function(req,res){
     console.log("Hello from answer page");
-    //console.log("This is player answer ",req.query);
-
-    //console.log("This is req.session", req.session);
 
     var playerAnswer = [];
     var correctAnswer =  [];
@@ -270,7 +224,7 @@ app.get('/answer', function(req,res){
     for (var id in req.query) {
         playerAnswer.push(req.query[id]);
 
-       // console.log("\n\n\nTHIS IS THE VAL",id, req.query[id]);
+       // console.log("This is the answer value",id, req.query[id]);
     };
 
     for (var i = 0; i < answerCountryandValue.length; i++) {
@@ -287,8 +241,6 @@ app.get('/answer', function(req,res){
     //Use the score results to update score
 
     req.session.gameScore += playerResults.numCorrect;
-
-    //ALSO NEED TO ADD INCREMENT TO PLAYER'S CUMULATIVE LIFETIME SCORE ***
 
     //Add info to gameSummary which is in req.session
 
@@ -347,7 +299,6 @@ app.get('/nextquestion', function(req,res){
 
         //Increment this player's CUMULATIVE score in Player table
 
-
         sql.Player.find({where:{id:req.session.userId}}).then(function(whoPlayed){
             console.log("Hello from cumulative update")
             var lifetime = whoPlayed.cumulative_score;
@@ -364,8 +315,6 @@ app.get('/nextquestion', function(req,res){
 
             //POSTING DIRECTLY, RATHER THAN CALLING AN INSTANCE METHOD
 
-            console.log("Hello from inbetween the two SQL calls")
-
         var now = new Date();
 
         sql.Score.create({
@@ -375,7 +324,6 @@ app.get('/nextquestion', function(req,res){
             PlayerId: req.session.userId,
             countries_per_round: req.session.countriesPerRound
         }).then(function(){
-            console.log("COUNTRIED PER ROUND", req.session.countriesPerRound);
             res.render('gameover.ejs',{ejsGameStats:gameFinalStats});
         })
 

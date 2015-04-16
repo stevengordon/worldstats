@@ -66,6 +66,20 @@ var randomSelection = function(quantity,maximum){
     return randomList;
 };
 
+var randomReorder = function(oldArray){
+    //this function returns a new array of arrays with the same elements as the old arrays but with the 0th objects in a new, random order
+
+    var newPattern = randomSelection(oldArray.length,oldArray.length);
+    var newArray = [];
+    
+    for (var i = 0; i < newPattern.length; i++) {
+        nextRandom = newPattern[i];
+        console.log(nextRandom);
+        newArray.push([oldArray[nextRandom][0],oldArray[i][1]]);
+    };
+    return newArray;
+};
+
 var sortArrayPairs = function(array){
     //This will be function that takes in an array and sorts it -- the catch is that the array is actually an array of objects, and it needs to sort each object by the "value" key pair in the object.
     //For now, it won't do anything -- but I want the placeholder function to be ready and it is called from other places.
@@ -116,10 +130,8 @@ module.exports = function(req,res,next) {
                 "round":1,
                 "score":0,
                 "screenName":"",
-                "countryAndValueData":[]
-               // "countries":[],  DON'T NEED THESE ANYMORE
-               // "values":[],
-               // "countryCodes":[]
+                "countryAndValueData":[],
+                "randomList":[]
             }; 
 
         //Increment to next round
@@ -176,6 +188,15 @@ module.exports = function(req,res,next) {
 
                 questionData = selectLines(questionData);
 
+                //CREATE RANDOM ORDER FOR COUNTRY DISPLAY
+                //This will be the order countries appear on the Question page
+
+                randomList = randomReorder(questionData);
+                console.log("Order has been randomized");
+                console.log("old order")
+                console.log(questionData);
+                console.log("new order");
+                console.log(randomList);
 
                 //Make object to pass to res.render for EJS view of Question page.
 
@@ -184,6 +205,7 @@ module.exports = function(req,res,next) {
                 roundData.metricShortName = currentMetricObject.metricShortName;
                 roundData.metricDescription = currentMetricObject.metricDescription;
                 roundData.countryAndValueData = questionData;
+                roundData.randomData = randomList;
 
                 roundData.screen_name = req.session.screen_name;
 
@@ -196,7 +218,7 @@ module.exports = function(req,res,next) {
                 req.session.nextRound = req.session.currentRound+1;
 
                 console.log("About to call next fun at end of NEW request call-back loop.")
-                console.log("Here is the data to be sent")
+                console.log("Here is the data to be sent Smile");
                 console.log(roundData);
 
                 //THIS IS KEY!  This is CALLBACK for after asynchronous API request

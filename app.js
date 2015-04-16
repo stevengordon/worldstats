@@ -143,6 +143,18 @@ app.get('/logout', function(req,res){
     res.redirect('/');
 });
 
+//Startgame with different levels
+app.get('/startgame/:level', function(req, res){
+    console.log("Hello from startgame");
+    var level = req.params.level;
+    console.log("Level");
+    console.log(level);
+
+    req.setupGame(level);
+
+    res.redirect('/question');
+});
+
 //Private routes that are only available to players after log-in
 //Authorization is handled via LoggedIn middleware function
 
@@ -197,7 +209,7 @@ app.get('/isworking', function(req,res){
 app.get('/pregame', function(req,res){
     req.currentUser().then(function(foundPlayer){
         if (foundPlayer) { //This if is redundant -- but will leave it to have Player name on pregame page
-            req.setupGame(); //initialize what is needed for the game
+            //req.setupGame(); //initialize what is needed for the game MOVE TO startgame
             res.render('pregame',{ejsFoundPlayer:foundPlayer});
         } else {
             res.redirect('/login');

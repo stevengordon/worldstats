@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include partials/head.ejs %>
+	<title>Question</title>
+</head>
+<header>
+	<% include partials/header.ejs %>
+</header>
+<body>
+	<h3>Hi, <%= ejsQuestionData.screen_name %>.</h3>
+	<h2>Question <%=ejsQuestionData.round%>  Current score: <%=ejsQuestionData.score%></h2>
+
+	<h3>Match each country with the correct statistic about</h3>
+	<h3><%=ejsQuestionData.metricShortName%></h3>
+
+<!-- 	<form action='/getanswerpage' method="GET">
+		<% ejsQuestionData.countryAndValueData.forEach(function(country){ %>
+			<div><%=country[0]%>, (<%=country[1]%>), <%=country[2]%>: <input type="radio"></div>
+		<% }) %>
+	</form> -->
+
+<table class = "large-text">
+	<tr class = "horizontal-borders">
+	<td>
+		<ul class = "sortable">
+			<% ejsQuestionData.randomList.forEach(function(data){ %>
+				<li><%= data[0] %></li>
+			<% }) %>
+		</ul>
+	</td>
+	<td>
+		<ul>
+			<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
+				<li><%= data[1] %></li>
+			<% }) %>
+		</ul>
+	</td>
+	</tr>
+</table>
+
+<!-- <ul>
+	<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
+		<li><%= data[1] %></li>
+	<% }) %>
+</ul> -->
+<script src="jquery.sortable.js"></script>
+<script>
+    $('.sortable').sortable().bind('sortupdate', function() {
+    	//console.log(this);
+    	Array.prototype.forEach.call(this.children, function(el,id){
+    		$("#"+id).val(el.innerHTML);
+    	});
+    //Triggered when the user stopped sorting and the DOM position has changed.
+	});
+</script>
+
+
+
+	<!-- <p>	<%=ejsQuestionData.countryAndValueData%></p> -->
+
+	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>
+
+
+<form id="answers" action="/answer" method="GET">
+	<% ejsQuestionData.randomList.forEach(function(data, id){ %>
+		<input style="display:none;" type="text" value="<%= data[0] %>" name="<%=id%>" id="<%=id%>"/>
+	<% }) %>
+	<button>Submit</button>
+</form>
+
+<!-- 	<form action="/login" method="POST">
+		<input type="text" name="loginScreenName" placeholder="Screen name">
+		<input type="password" name="loginPassword" placeholder="Password">
+		<button>Login</button>
+	</form> -->
+<!-- <script src="./javascripts/jquery.sortable.js"></script> -->
+</body>
+</html>

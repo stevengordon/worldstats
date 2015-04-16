@@ -99,7 +99,7 @@ var sortArrayPairs = function(array){
 };
 
 module.exports = function(req,res,next) {
-    req.setupGame = function(){
+    req.setupGame = function(level){
     console.log("Hello from req.setupGame");
     console.log("Yoda")
         //add initial values to req.session.gameScore (example)
@@ -108,7 +108,7 @@ module.exports = function(req,res,next) {
     req.session.currentRound = 1; //Which round is player currently playing?
     req.session.nextRound = 1; //just define it this way for starting condition
     req.session.maxRounds = 6; //How many rounds ends the game?
-    req.session.countriesPerRound = 4; //How many countries are displayed in a given round? Change this to make game harder or easier.  Maybe even pass this in as a parameter to playBall function for multiple level options...
+    req.session.countriesPerRound = level; //How many countries are displayed in a given round? Change this to make game harder or easier.  Maybe even pass this in as a parameter to playBall function for multiple level options...
     req.session.currentMetricNum = 0; //this is internal ID # of the current metric
     req.session.gameMetricOrder = []; //this is array, set once at the start of each game, with order of metrics to use this particular game
     req.session.gameSummary = []; //Keep track of each round's "action" for final summary --> structure is:

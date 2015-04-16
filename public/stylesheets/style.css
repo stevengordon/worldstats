@@ -113,11 +113,11 @@ body {
 }
 
 .sg-easy {
-  background-color: orange;
+  background-color: green;
 }
 
 .sg-regular {
-  background-color: green;
+  background-color: yellow;
 }
 
 .sg-hard {
@@ -127,7 +127,6 @@ body {
 .spaced-out {
   padding-top: 50px;
 }
-
 
 .navbar {
   background-color: #083ACF;

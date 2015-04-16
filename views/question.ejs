@@ -6,11 +6,11 @@
 	<title>Question</title>
 </head>
 <header>
-	<% include partials/header.ejs %>
+	<% include partials/headerLoggedIn.ejs %>
 </header>
 <body>
 	<h3>Hi, <%= ejsQuestionData.screen_name %>.</h3>
-	<h2>Question <%=ejsQuestionData.round%>  Current score: <%=ejsQuestionData.score%></h2>
+	<h2>Question <%=ejsQuestionData.round%>  Current score <%=ejsQuestionData.score%></h2>
 
 	<h3>Match each country with the correct statistic about</h3>
 	<h3><%=ejsQuestionData.metricShortName%></h3>

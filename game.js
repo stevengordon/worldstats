@@ -17,8 +17,14 @@ var getMetricInfo = function (metricNumber) {
     //Until metric information is moved to SQL database, it is hard-coded in array below:
 
     var metricObject = {
-        "1": {"metricCode":"AG.LND.FRST.ZS","metricDescription":"Forest area is land under natural or planted stands of trees of at least 5 meters in size, whether productive or not, and excludes tree stands in agricultural production systems (for example, in fruit plantations and agroforestry systems) and trees in urban parks and gardens.","metricShortName":"% of land that is forest.","selectionType":"random"},
-        "2": {"metricCode":"EP.PMP.SGAS.CD","metricDescription":"Fuel prices refer to the pump prices of the most widely sold grade of gasoline. Prices have been converted from the local currency to U.S. dollars. (1 gallon is 3.78 liters)","metricShortName":"Gas price at the pump per liter in USD (1 gallon is 3.78 liters)","selectionType":"random"},
+        "1": {
+            "metricCode":"AG.LND.FRST.ZS",
+            "metricDescription":"Forest area is land under natural or planted stands of trees of at least 5 meters in size, whether productive or not, and excludes tree stands in agricultural production systems (for example, in fruit plantations and agroforestry systems) and trees in urban parks and gardens.",
+            "metricShortName":"% of land that is forest.",
+            "selectionType":"random"},
+        "2": {
+            "metricCode":"EP.PMP.SGAS.CD",
+            "metricDescription":"Fuel prices refer to the pump prices of the most widely sold grade of gasoline. Prices have been converted from the local currency to U.S. dollars. (1 gallon is 3.78 liters)","metricShortName":"Gas price at the pump per liter in USD (1 gallon is 3.78 liters)","selectionType":"random"},
         "3": {"metricCode":"SE.PRM.ENRL.TC.ZS","metricDescription":"Pupil-teacher ratio, primary school, is the number of pupils enrolled in primary school divided by the number of primary school teachers.","metricShortName":"Pupil-teacher ratio, primary school","selectionType":"random"},
         "4": {"metricCode":"EG.ELC.ACCS.ZS","metricDescription":"Access to electricity is the percentage of population with access to electricity.","metricShortName":"% access to electricity","selectionType":"random"},
         "5": {"metricCode":"SH.XPD.PCAP","metricDescription":"Total health expenditure is the sum of public and private health expenditures as a ratio of total population. It covers the provision of health services (preventive and curative), family planning activities, nutrition activities, and emergency aid designated for health but does not include provision of water and sanitation. Data are in current U.S. dollars.","metricShortName":"Health expenditure per capita (current US$)","selectionType":"random"},
@@ -95,7 +101,7 @@ module.exports = function(req,res,next) {
     req.session.gameScore = 0; //How many points has player earned in this game so far?
     req.session.currentRound = 1; //Which round is player currently playing?
     req.session.nextRound = 1; //just define it this way for starting condition
-    req.session.maxRounds = 3; //How many rounds ends the game?
+    req.session.maxRounds = 6; //How many rounds ends the game?
     req.session.countriesPerRound = 4; //How many countries are displayed in a given round? Change this to make game harder or easier.  Maybe even pass this in as a parameter to playBall function for multiple level options...
     req.session.currentMetricNum = 0; //this is internal ID # of the current metric
     req.session.gameMetricOrder = []; //this is array, set once at the start of each game, with order of metrics to use this particular game
@@ -105,7 +111,9 @@ module.exports = function(req,res,next) {
     req.session.metricShortName = "";
 
     //Choose a random order of metrics before the first round
-    req.session.gameMetricOrder = randomOrder(req.session.maxRounds);
+    //req.session.gameMetricOrder = randomOrder(req.session.maxRounds); //OLD WAY -- Only randomized within first maxRounds # of metrics -- so if playing game of 3 rounds, only used 1st 3 metrics. Not right.
+    req.session.gameMetricOrder = randomSelection(req.session.maxRounds,10); //This should randomize using all of the 10 metrics in metricObject.  If there were not scope issues, then could use: Object.keys(metricObject).length to get # of metrics in metricObject, but it is not available here
+
     };
     console.log("Game order -- inside of req.setupGame");
     console.log(req.session.gameMetricOrder);
@@ -218,7 +226,7 @@ module.exports = function(req,res,next) {
                 req.session.nextRound = req.session.currentRound+1;
 
                 console.log("About to call next fun at end of NEW request call-back loop.")
-                console.log("Here is the data to be sent Smile");
+                console.log("Here is the data to be sent");
                 console.log(roundData);
 
                 //THIS IS KEY!  This is CALLBACK for after asynchronous API request

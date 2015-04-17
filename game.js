@@ -64,6 +64,11 @@ var getMetricInfo = function (metricNumber) {
             "metricDescription":"Carbon dioxide emissions are those stemming from the burning of fossil fuels and the manufacture of cement. They include carbon dioxide produced during consumption of solid, liquid, and gas fuels and gas flaring.",
             "metricShortName":"CO2 emissions (metric tons per capita)",
             "selectionType":"random"},
+        "11": { 
+            "metricCode":"SH.H2O.SAFE.RU.ZS",
+            "metricDescription":"Access to an improved water source refers to the percentage of the population using an improved drinking water source. The improved drinking water source includes piped water on premises (piped household water connection located inside the user’s dwelling, plot or yard), and other improved drinking water sources (public taps or standpipes, tube wells or boreholes, protected dug wells, protected springs, and rainwater collection).",
+            "metricShortName":"% of rural population with access to improved water",
+            "selectionType":"random"}
     };
 
     return metricObject[metricNumber];
@@ -160,7 +165,7 @@ module.exports = function(req,res,next) {
 
     //Choose a random order of metrics before the first round
     //req.session.gameMetricOrder = randomOrder(req.session.maxRounds); //OLD WAY -- Only randomized within first maxRounds # of metrics -- so if playing game of 3 rounds, only used 1st 3 metrics. Not right.
-    req.session.gameMetricOrder = randomSelection(req.session.maxRounds,10,false); //This should randomize using all of the 10 metrics in metricObject.  If there were not scope issues, then could use: Object.keys(metricObject).length to get # of metrics in metricObject, but it is not available here
+    req.session.gameMetricOrder = randomSelection(req.session.maxRounds,11,false); //This should randomize using all of the 11 metrics in metricObject.  If there were not scope issues, then could use: Object.keys(metricObject).length to get # of metrics in metricObject, but it is not available here
     console.log("Game order -- inside of req.setupGame");
     console.log(req.session.gameMetricOrder);
 

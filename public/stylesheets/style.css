@@ -80,9 +80,21 @@ margin-left: 100px;
 padding-right: 10px;
 }
 
-.horizontal-borders {
+.horizontal-borders-regular {
+  border-top-width: 3 px;
+  border-color: yellow;
+  border-style: solid;
+}
+
+.horizontal-borders-easy {
   border-top-width: 3 px;
   border-color: green;
+  border-style: solid;
+}
+
+.horizontal-borders-insane {
+  border-top-width: 3 px;
+  border-color: red;
   border-style: solid;
 }
 

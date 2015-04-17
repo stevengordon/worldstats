@@ -22,7 +22,13 @@
 	</form> -->
 
 <table class = "large-text">
-	<tr class = "horizontal-borders">
+<% if (ejsQuestionData.level === "2") { %>
+	<tr class = "horizontal-borders-easy">
+    <%} else if(ejsQuestionData.level === "4"){ %>
+  		<tr class = "horizontal-borders-regular">
+		<%} else if(ejsQuestionData.level === "6"){ %>
+			<tr class = "horizontal-borders-insane">
+		<%};%>
 	<td>
 		<ul class = "sortable">
 			<% ejsQuestionData.randomList.forEach(function(data){ %>

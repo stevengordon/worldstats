@@ -90,7 +90,9 @@ app.get('/', function(req,res){
 });
 
 //High scores page
-app.get('/scores', function(req,res){
+app.get('/highscores', function(req,res){
+
+    
     res.render('highscores.ejs');
 //    res.send("This is the high scores page! Top score is still 0");
 });

@@ -24,15 +24,46 @@ var getMetricInfo = function (metricNumber) {
             "selectionType":"random"},
         "2": {
             "metricCode":"EP.PMP.SGAS.CD",
-            "metricDescription":"Fuel prices refer to the pump prices of the most widely sold grade of gasoline. Prices have been converted from the local currency to U.S. dollars. (1 gallon is 3.78 liters)","metricShortName":"Gas price at the pump per liter in USD (1 gallon is 3.78 liters)","selectionType":"random"},
-        "3": {"metricCode":"SE.PRM.ENRL.TC.ZS","metricDescription":"Pupil-teacher ratio, primary school, is the number of pupils enrolled in primary school divided by the number of primary school teachers.","metricShortName":"Pupil-teacher ratio, primary school","selectionType":"random"},
-        "4": {"metricCode":"EG.ELC.ACCS.ZS","metricDescription":"Access to electricity is the percentage of population with access to electricity.","metricShortName":"% access to electricity","selectionType":"random"},
-        "5": {"metricCode":"SH.XPD.PCAP","metricDescription":"Total health expenditure is the sum of public and private health expenditures as a ratio of total population. It covers the provision of health services (preventive and curative), family planning activities, nutrition activities, and emergency aid designated for health but does not include provision of water and sanitation. Data are in current U.S. dollars.","metricShortName":"Health expenditure per capita (current US$)","selectionType":"random"},
-        "6": {"metricCode":"IT.NET.USER.P2","metricDescription":"Internet users are defined as people with access to the worldwide network.","metricShortName":"Internet users per 100 people","selectionType":"random"},
-        "7": {"metricCode":"SP.DYN.LE00.MA.IN","metricDescription":"Life expectancy at birth indicates the number of years a newborn infant would live if prevailing patterns of mortality at the time of its birth were to stay the same throughout its life","metricShortName":"Life expectancy at birth, male","selectionType":"random"},
-        "8": {"metricCode":"SP.URB.TOTL.IN.ZS","metricDescription":"Urban population refers to people living in urban areas as defined by national statistical offices. It is calculated using World Bank population estimates and urban ratios from the United Nations World Urbanization Prospects.","metricShortName":"Urban Population (% of total)","selectionType":"random"},
-        "9": {"metricCode":"SH.DYN.AIDS.ZS","metricDescription":"Prevalence of HIV refers to the percentage of people ages 15-49 who are infected with HIV","metricShortName":"Prevalence of HIV (% of population ages 15-49)","selectionType":"random"},
-        "10": {"metricCode":"EN.ATM.CO2E.PC","metricDescription":"Carbon dioxide emissions are those stemming from the burning of fossil fuels and the manufacture of cement. They include carbon dioxide produced during consumption of solid, liquid, and gas fuels and gas flaring.","metricShortName":"CO2 emissions (metric tons per capita)","selectionType":"random"},
+            "metricDescription":"Fuel prices refer to the pump prices of the most widely sold grade of gasoline. Prices have been converted from the local currency to U.S. dollars. (1 gallon is 3.78 liters)",
+            "metricShortName":"Gas price at the pump per liter in USD (1 gallon is 3.78 liters)",
+            "selectionType":"random"},
+        "3": {
+            "metricCode":"SE.PRM.ENRL.TC.ZS",
+            "metricDescription":"Pupil-teacher ratio, primary school, is the number of pupils enrolled in primary school divided by the number of primary school teachers.",
+            "metricShortName":"Pupil-teacher ratio, primary school",
+            "selectionType":"random"},
+        "4": {
+            "metricCode":"EG.ELC.ACCS.ZS",
+            "metricDescription":"Access to electricity is the percentage of population with access to electricity.",
+            "metricShortName":"% access to electricity",
+            "selectionType":"random"},
+        "5": {
+            "metricCode":"SH.XPD.PCAP",
+            "metricDescription":"Total health expenditure is the sum of public and private health expenditures as a ratio of total population. It covers the provision of health services (preventive and curative), family planning activities, nutrition activities, and emergency aid designated for health but does not include provision of water and sanitation. Data are in current U.S. dollars.","metricShortName":"Health expenditure per capita (current US$)","selectionType":"random"},
+        "6": {
+            "metricCode":"IT.NET.USER.P2","metricDescription":"Internet users are defined as people with access to the worldwide network.",
+            "metricShortName":"Internet users per 100 people",
+            "selectionType":"random"},
+        "7": {
+            "metricCode":"SP.DYN.LE00.MA.IN",
+            "metricDescription":"Life expectancy at birth indicates the number of years a newborn infant would live if prevailing patterns of mortality at the time of its birth were to stay the same throughout its life",
+            "metricShortName":"Life expectancy at birth, male",
+            "selectionType":"random"},
+        "8": {
+            "metricCode":"SP.URB.TOTL.IN.ZS",
+            "metricDescription":"Urban population refers to people living in urban areas as defined by national statistical offices. It is calculated using World Bank population estimates and urban ratios from the United Nations World Urbanization Prospects.",
+            "metricShortName":"Urban Population (% of total)",
+            "selectionType":"random"},
+        "9": {
+            "metricCode":"SH.DYN.AIDS.ZS",
+            "metricDescription":"Prevalence of HIV refers to the percentage of people ages 15-49 who are infected with HIV",
+            "metricShortName":"Prevalence of HIV (% of population ages 15-49)",
+            "selectionType":"random"},
+        "10": {
+            "metricCode":"EN.ATM.CO2E.PC",
+            "metricDescription":"Carbon dioxide emissions are those stemming from the burning of fossil fuels and the manufacture of cement. They include carbon dioxide produced during consumption of solid, liquid, and gas fuels and gas flaring.",
+            "metricShortName":"CO2 emissions (metric tons per capita)",
+            "selectionType":"random"},
     };
 
     return metricObject[metricNumber];
@@ -172,7 +203,7 @@ module.exports = function(req,res,next) {
             var urlWB = "http://api.worldbank.org/countries/all/indicators/"+whichMetricCode+"?format=json&&MRV=1&&per_page=400";
             console.log(urlWB);
 
-            var blackListedCountries=["1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ","ZF","B8","S2","XU","XC","XJ","1W","XE","ZG","ZF"];
+            var blackListedCountries=["EU","XL","1A", "XT", "S1","XD","8S","S4","OE","XY","XP","ZQ","XQ","S3","4E","F1","Z4","Z7","XR","7E","XS","XO","7E","XM","XN","ZJ","ZF","B8","S2","XU","XC","XJ","1W","XE","ZG","ZF"];
 
             request({url: urlWB, timeout: 6000}, function(error,response,body){
                 console.log("Hello from inside request function")
@@ -233,6 +264,7 @@ module.exports = function(req,res,next) {
                 roundData.metricDescription = currentMetricObject.metricDescription;
                 roundData.countryAndValueData = questionData;
                 roundData.randomList = randomList;
+                roundData.level = req.session.countriesPerRound;
 
                 roundData.screen_name = req.session.screen_name;
 
@@ -245,7 +277,7 @@ module.exports = function(req,res,next) {
                 req.session.nextRound = req.session.currentRound+1;
 
                 console.log("About to call next fun at end of NEW request call-back loop.")
-                console.log("Here is the data to be sent");
+                console.log("Here is the data to be sent YODA");
                 console.log(roundData);
 
                 //THIS IS KEY!  This is CALLBACK for after asynchronous API request

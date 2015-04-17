@@ -92,16 +92,27 @@ var randomReorder = function(oldArray){
 };
 
 var sortArrayPairs = function(array){
-    //This will be function that takes in an array and sorts it -- the catch is that the array is actually an array of objects, and it needs to sort each object by the "value" key pair in the object.
-    //For now, it won't do anything -- but I want the placeholder function to be ready and it is called from other places.
-
+    //This will be function that takes in an array and sorts it -- the catch is that the array is actually an array of arrays, and it needs to sort by the 1st index of each nested array.
+    console.log("Hello from sortArrayPairs");
+    console.log("Array before ",array);
+    for (var j = 0; j < array.length; j++) {
+        for (var i = 0; i < array.length-1; i++) {
+            var first = array[i][1];
+            var comp = array[i+1][1];
+            if (first > comp) {
+                var swapper = array[i];
+                array[i] = array[i+1];
+                array[i+1] = swapper;
+            }
+        }; //end of i loop
+    }; //end of j loop
+    console.log("Array after ",array);
     return array;
 };
 
 module.exports = function(req,res,next) {
     req.setupGame = function(level){
     console.log("Hello from req.setupGame");
-    console.log("Yoda")
         //add initial values to req.session.gameScore (example)
         //call this from pregame when ready to play
     req.session.gameScore = 0; //How many points has player earned in this game so far?
@@ -180,7 +191,7 @@ module.exports = function(req,res,next) {
                         countryCode = realData[i].country.id;
                         countryValue = (parseFloat(realData[i].value));
 
-                       // console.log(countryName, countryCode, countryValue)
+                       console.log(countryName, countryCode, countryValue)
 
                       if ((typeof countryValue === 'number') && !(isNaN(countryValue))) { //prune out NaN and null and undefined rows // for some reason, typeof NaN === 'number' returns true! ***
                         if (blackListedCountries.indexOf(countryCode) === -1) {
@@ -188,19 +199,21 @@ module.exports = function(req,res,next) {
                         }
                       };
                     };
-                       // console.log("This is questionData just after loop");
-                       // console.log(questionData);
+                       console.log("This is questionData just after loop");
+                       console.log(questionData);
                 }
 
                 //NOW THAT WE HAVE *FULL* DATA SET FROM API, REDUCE IT TO WHAT IS NEEDED FOR THE ROUND
 
-                //SORT
-
-                questionData = sortArrayPairs(questionData);
-
                 //SELECT
 
                 questionData = selectLines(questionData);
+                //SORT
+
+                console.log("About to call sort - Yoda");
+
+                questionData = sortArrayPairs(questionData);
+
 
                 //CREATE RANDOM ORDER FOR COUNTRY DISPLAY
                 //This will be the order countries appear on the Question page

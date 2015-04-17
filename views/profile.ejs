@@ -5,7 +5,7 @@
 	<title>Profile</title>
 </head>
 <header>
-	<% include partials/header.ejs %>
+	<% include partials/headerLoggedIn.ejs %>
 </header>
 <body>
 	<h1>Profile page</h1>
@@ -20,10 +20,10 @@
 	
 
 
-	<h2>Here are your best games</h2>
+	<h2>Here are your top three games</h2>
 	<%for (var i = 0; i < ejsProfile.score.length; i++) {
 		%>
-		<div> <b> Score <%=ejsProfile.score[i].dataValues.game_score%> </b> Date <%=ejsProfile.score[i].dataValues.date_played%> </div>
+		<div> <b> Score <%=ejsProfile.score[i].dataValues.game_score%> </b> Date <%=ejsProfile.score[i].dataValues.date_played.toDateString()%> </div>
 	<% }; %>
 
 

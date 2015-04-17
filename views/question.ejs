@@ -31,9 +31,9 @@
 		</ul>
 	</td>
 	<td>
-		<ul>
+		<ul class = "sg-no-bullets">
 			<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
-				<li><%= data[1] %></li>
+				<li><%=data[1].toFixed(2) %></li>
 			<% }) %>
 		</ul>
 	</td>

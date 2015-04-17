@@ -100,6 +100,14 @@ body {
     -o-background-size: cover;
 }
 
+.full-login {
+    background: url('/images/world-in-your-hands.jpg') center center fixed no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: contain;
+    -o-background-size: cover;
+}
+
 
 .overlay-text {
     font-size: 4em;
@@ -136,4 +144,7 @@ body {
   background-color: #083ACF;
 }
 
+.sg-no-bullets {
+  list-style-type: none;
+}
 

@@ -8,18 +8,33 @@
 	<% include partials/headerLoggedIn.ejs %>
 </header>
 <body class = "large-text">
-	<h1>Answers!</h1>
-<!-- 	<h2>About <%=ejsAnswer.metricShortName%></h2>
+	<h1>Answers</h1>
+<!-- <h2>About <%=ejsAnswer.metricShortName%></h2>
  -->
+<table class = "large-text">
+	<tr class = "">
+	<td>
 	<%ejsAnswer.answerKey.forEach(function(data){
 		if (data[2] === "Correct") { %>
-			<div class="correct"> <%=data[0]%> <%=data[1]%> </div> <%
+			<div class="correct"> <%=data[0]%> <%=data[1].toFixed(2)%> </div> <%
 		} else { %>
-			<div class="wrong"> <%=data[0]%> <%=data[1]%> <b>Your answer: <%=data[2]%> </b></div><%
+			<div class="wrong"> <%=data[0]%> <%=data[1].toFixed(2)%> <b>Your answer: <%=data[2]%> </b></div><%
 	}
 	}) %>
+	</td>
+	<td>
+	</td>
+	</tr>
+	</table>
+	<table>
+	<tr><h3>
+	<%ejsAnswer.answerKey.forEach(function(data){%>
+		<a href="https://www.google.com/maps/place/<%=data[0]%>" target="_blank">Where is <%=data[0]%>?</a>
+	<%});%>
+	</h3></tr>
+</table>
 
-<h3>You get <%=ejsAnswer.numCorrect%> point<% if (ejsAnswer.numCorrect !== 1) {%>s<% } %>!</h3>
+<h2>You get <%=ejsAnswer.numCorrect%> point<% if (ejsAnswer.numCorrect !== 1) {%>s<% } %></h2>
 
 <form action="/nextquestion" method="GET">
 	<button>Next question</button>

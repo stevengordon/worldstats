@@ -91,10 +91,19 @@ app.get('/', function(req,res){
 
 //High scores page
 app.get('/highscores', function(req,res){
-
-    
-    res.render('highscores.ejs');
-//    res.send("This is the high scores page! Top score is still 0");
+    console.log("Hello from highscores route")
+    sql.Score.findAll({limit: 10, order: '"game_score" DESC'}).then(function(scoreData){
+        var highScoreArray = [];
+        for (var i = 0; i < scoreData.length; i++) {
+            var highScore = scoreData[i].dataValues.game_score;
+            var highDate = scoreData[i].dataValues.date_played;
+            var highPlayer = scoreData[i].dataValues.screen_name;
+            highScoreArray.push([highScore,highDate]);
+        };
+        console.log("This is highScoreArray")
+        console.log(highScoreArray);
+        res.render('highscores.ejs',{ejsScoreArray:highScoreArray});
+    })
 });
 
 //Create new player page

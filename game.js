@@ -20,7 +20,7 @@ var getMetricInfo = function (metricNumber) {
         "1": {
             "metricCode":"AG.LND.FRST.ZS",
             "metricDescription":"Forest area is land under natural or planted stands of trees of at least 5 meters in size, whether productive or not, and excludes tree stands in agricultural production systems (for example, in fruit plantations and agroforestry systems) and trees in urban parks and gardens.",
-            "metricShortName":"% of land that is forest.",
+            "metricShortName":"% of land that is forest",
             "selectionType":"random"},
         "2": {
             "metricCode":"EP.PMP.SGAS.CD",
@@ -241,7 +241,7 @@ module.exports = function(req,res,next) {
                 questionData = selectLines(questionData);
                 //SORT
 
-                console.log("About to call sort - Yoda");
+                console.log("About to call sort");
 
                 questionData = sortArrayPairs(questionData);
 

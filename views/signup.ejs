@@ -5,10 +5,11 @@
 	<title>WorldStats Sign Up</title>
 </head>
 <header>
-	<% include partials/header.ejs %>
+	<% include partials/headerLoggedOut.ejs %>
 </header>
 <body>
-	<h1>Please create a new account!</h1>
+	<h1>Welcome to WorldStats.</h1>
+	<h1>Please enter your information to create a new account.</h1>
 	<form action="/players" method="POST">
 		<input type="text" name="signupScreenName" placeholder="Screen name">
 		<input type="text" name="signupEmail" placeholder="Email">	

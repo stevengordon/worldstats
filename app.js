@@ -94,14 +94,12 @@ app.get('/highscores', function(req,res){
     console.log("Hello from highscores route")
     sql.Score.findAll({limit: 10, order: '"game_score" DESC', include:[{model:sql.Player}]}).then(function(scoreData){
         //console.log(scoreData);
-        console.log(scoreData[1])
-        console.log("This is Luke");
-     console.log(scoreData[1].dataValues.Player.dataValues.screen_name);
+
         var highScoreArray = [];
         for (var i = 0; i < scoreData.length; i++) {
             var highScore = scoreData[i].dataValues.game_score;
             var highDate = scoreData[i].dataValues.date_played;
-            var highPlayer = scoreData[1].dataValues.Player.dataValues.screen_name;
+            var highPlayer = scoreData[i].dataValues.Player.dataValues.screen_name;
             highScoreArray.push([highScore,highDate,highPlayer]);
         };
         console.log("This is highScoreArray")

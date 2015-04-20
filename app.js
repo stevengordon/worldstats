@@ -94,7 +94,6 @@ app.get('/highscores', function(req,res){
     console.log("Hello from highscores route")
     sql.Score.findAll({limit: 10, order: '"game_score" DESC', include:[{model:sql.Player}]}).then(function(scoreData){
         //console.log(scoreData);
-
         var highScoreArray = [];
         for (var i = 0; i < scoreData.length; i++) {
             var highScore = scoreData[i].dataValues.game_score;

@@ -8,14 +8,15 @@
 	<% include partials/headerLoggedIn.ejs %>
 </header>
 <body>
-	<h1>Game over!</h1>
-	<h2>Congratulations!</h2>
+	<div class="padMe">
+		<h1>Game over!</h1>
+		<h2>Congratulations!</h2>
 
-	<h2>Your final score is: <%=ejsGameStats.finalScore%></h2>
+		<h2>Your final score is: <%=ejsGameStats.finalScore%></h2>
 
-<form action="/startover" method="GET">
-	<button>Try again</button>
-</form>
-
+	<form action="/startover" method="GET">
+		<button>Try again</button>
+	</form>
+</div>
 </body>
 </html>

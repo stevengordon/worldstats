@@ -9,23 +9,26 @@
 </header>
 <body>
 
-<table>
-	<tr>
-		<td>
-			<h1>Here are the top 10 high scores</h1>
+<div class="padMe">
 
-			<%for (var i = 0; i < ejsScoreArray.length; i++) {
-				%>
-				<div> <h4><b> Score <%=ejsScoreArray[i][0]%>  </b>  Date <%=ejsScoreArray[i][1].toDateString()%>  Player <b><%=ejsScoreArray[i][2]%></b></h4></div>
-			<% }; %>
-				
-		</td>
-		<td>
-			<img src="images/globeflags.png" alt="World under construction">	
-		</td>
-	</tr>
-</table>
+	<table>
+		<tr>
+			<td>
+				<h1>Here are the top 10 high scores</h1>
 
+				<%for (var i = 0; i < ejsScoreArray.length; i++) {
+					%>
+					<div> <h4><b> Score <%=ejsScoreArray[i][0]%>  </b>  Date <%=ejsScoreArray[i][1].toDateString()%>  Player <b><%=ejsScoreArray[i][2]%></b></h4></div>
+				<% }; %>
+					
+			</td>
+			<td>
+				<img src="images/globeflags.png" alt="World in progress">	
+			</td>
+		</tr>
+	</table>
+
+<div>
 </body>
 </html>
 

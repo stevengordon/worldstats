@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 	<% include partials/head.ejs %>
 	<title>Question</title>
 </head>
 <header>
 	<% include partials/headerLoggedIn.ejs %>
 </header>
-<body>
-	<h3>Hi, <%= ejsQuestionData.screen_name %></h3>
-	<h2>Question <%=ejsQuestionData.round%>  Current score <%=ejsQuestionData.score%></h2>
-	<h2><%=ejsQuestionData.metricShortName%></h2>
 
-	<h4>Drag the countries to align with their correct statistic, then click submit.</h4>
+<div class="padMe">
+	<body>
+		<!-- <h3>Hi, <%= ejsQuestionData.screen_name %></h3> -->
+		<h2>Question <%=ejsQuestionData.round%>  Current score <%=ejsQuestionData.score%></h2>
+		<h2><%=ejsQuestionData.metricShortName%></h2>
 
-<!-- 	<form action='/getanswerpage' method="GET">
-		<% ejsQuestionData.countryAndValueData.forEach(function(country){ %>
-			<div><%=country[0]%>, (<%=country[1]%>), <%=country[2]%>: <input type="radio"></div>
-		<% }) %>
-	</form> -->
+		<h4>Drag the countries to align with their correct statistic, then click submit.</h4>
 
-<table class = "large-text">
-<% if (ejsQuestionData.level === "2") { %>
-	<tr class = "horizontal-borders-easy">
-    <%} else if(ejsQuestionData.level === "4"){ %>
-  		<tr class = "horizontal-borders-regular">
-		<%} else if(ejsQuestionData.level === "6"){ %>
-			<tr class = "horizontal-borders-insane">
-		<%};%>
-	<td>
-		<ul class = "sortable">
-			<% ejsQuestionData.randomList.forEach(function(data){ %>
-				<li><%= data[0] %></li>
+	<!-- 	<form action='/getanswerpage' method="GET">
+			<% ejsQuestionData.countryAndValueData.forEach(function(country){ %>
+				<div><%=country[0]%>, (<%=country[1]%>), <%=country[2]%>: <input type="radio"></div>
 			<% }) %>
-		</ul>
-	</td>
-	<td>
-		<ul class = "sg-no-bullets">
-			<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
-				<li><%=data[1].toFixed(2) %></li>
-			<% }) %>
-		</ul>
-	</td>
-	</tr>
-</table>
+		</form> -->
 
+	<table class = "large-text">
+	<% if (ejsQuestionData.level === "2") { %>
+		<tr class = "horizontal-borders-easy">
+	    <%} else if(ejsQuestionData.level === "4"){ %>
+	  		<tr class = "horizontal-borders-regular">
+			<%} else if(ejsQuestionData.level === "6"){ %>
+				<tr class = "horizontal-borders-insane">
+			<%};%>
+		<td>
+			<ul class = "sortable">
+				<% ejsQuestionData.randomList.forEach(function(data){ %>
+					<li><%= data[0] %></li>
+				<% }) %>
+			</ul>
+		</td>
+		<td>
+			<ul class = "sg-no-bullets">
+				<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
+					<li><%=data[1].toFixed(2) %></li>
+				<% }) %>
+			</ul>
+		</td>
+		</tr>
+	</table>
 <!-- <ul>
 	<% ejsQuestionData.countryAndValueData.forEach(function(data){ %>
 		<li><%= data[1] %></li>
@@ -71,6 +71,7 @@
 
 	<h3> Want more details? <%=ejsQuestionData.metricDescription%></h3>
 
+</div>
 
 <!-- 	<form action="/login" method="POST">
 		<input type="text" name="loginScreenName" placeholder="Screen name">

@@ -7,26 +7,26 @@
 <header>
 	<% include partials/headerLoggedIn.ejs %>
 </header>
-<body>
+<body class="padMe">
 	<h1>Profile page</h1>
 
 	<h2>Here's your information...</h2>
 	<ul>
-	<li>Screen name: <%=ejsProfile.player.screen_name%></li>
-	<li>Email: <%=ejsProfile.player.email%></li>
-	<li>Cumulative score: <%=ejsProfile.player.cumulative_score%></li>
+	<li>Screen name: <b><%=ejsProfile.player.screen_name%></b></li>
+	<li>Email: <b><%=ejsProfile.player.email%></b></li>
 	</ul>
 
-	
-
+	<h2>Cumulative score: <b><%=ejsProfile.player.cumulative_score%></b></h2>
 
 	<h2>Here are your top three games</h2>
 	<%for (var i = 0; i < ejsProfile.score.length; i++) {
 		%>
-		<div> <b> Score <%=ejsProfile.score[i].dataValues.game_score%> </b> Date <%=ejsProfile.score[i].dataValues.date_played.toDateString()%> </div>
+		<div> <b> Score <%=ejsProfile.score[i].dataValues.game_score%> </b> on <%=ejsProfile.score[i].dataValues.date_played.toDateString()%> </div>
 	<% }; %>
 
+<h3>
 	<a href="/pregame"><b>Play again!</b></a>
+</h3>
 
 
 <!-- 	<form action="/login" method="POST">

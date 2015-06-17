@@ -18,7 +18,7 @@
 
 				<%for (var i = 0; i < ejsScoreArray.length; i++) {
 					%>
-					<div> <h4><b> Score <%=ejsScoreArray[i][0]%>  </b>  Date <%=ejsScoreArray[i][1].toDateString()%>  Player <b><%=ejsScoreArray[i][2]%></b></h4></div>
+					<div> <h4><b> Score <%=ejsScoreArray[i][0]%>  </b>  on <%=ejsScoreArray[i][1].toDateString()%>  by <b><%=ejsScoreArray[i][2]%></b></h4></div>
 				<% }; %>
 					
 			</td>
